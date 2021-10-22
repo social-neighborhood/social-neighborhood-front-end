@@ -7,6 +7,9 @@ import AdminDashBoard from './pages/adminDashboard';
 import ResidentDashBoard from './pages/residentDashoard';
 import Login from './pages/login';
 import Register from './pages/register';
+import Conjuntos from './Components/Conjuntos';
+import ConfigurarConjuntos from './Components/ConfigurarConjuntos';
+import EditarUsuario from './Components/EditarUsuario';
 
 function App() {
   return (
@@ -29,6 +32,15 @@ function App() {
         </Route>
         <Route exact path='/Register'>
           <Register/>
+        </Route>
+        <Route exact path='/Conjuntos'>
+          <Conjuntos/>
+        </Route>
+        <Route exact path='/ConfigurarConjuntos'>
+          <ConfigurarConjuntos/>
+        </Route>
+        <Route exact path='/EditarUsuario'>
+          <EditarUsuario/>
         </Route>
         <Route exact path='*'>
           <Home/>

@@ -8,7 +8,7 @@ import {
     HeroContentWrapper
 } from './LoginElements';
 import './LoginFormElements.css';
-import people from '../../images/people.jpg';
+import people from './../../img/background.jpg';
 const HomeSection = () => {
     return (
         <HeroContainer id="home">

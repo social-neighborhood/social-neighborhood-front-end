@@ -1,10 +1,14 @@
-import React from 'react'
+import { useContext, useEffect, useState } from "react";
+import Post from "../Post";
+import "./feed.css";
 
 const Feed = () => {
     return (
-        <div>
-            <p>Aqui van los Post de los residentes y administrador</p>
+    <div className="feed">
+        <div className="feedWrapper">
+            <Post />
         </div>
+    </div>
     )
 }
 

@@ -1,0 +1,15 @@
+.formConjuntos{
+    margin-top: 40px;
+
+}
+.image{
+    width: 400px;
+    height: 400px
+}
+
+.numberInput{
+    max-width: 10px;
+}
+.bk{
+    background-image: url('/public/conjunto.png')
+}

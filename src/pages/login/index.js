@@ -37,6 +37,7 @@ const Login=()=>{
           ...values,
           [name]: value
         });
+        console.log(values);
       };
 
     const [showPassword,setShowPassword] = useState(false);
@@ -125,9 +126,9 @@ const Login=()=>{
                         <br></br>
                         <br></br>
                         {currentUserData?.rol==="Administrador"?
-                        <></>
+                        <div></div>
                         :
-                        <>
+                        <div>
                         {values.rol==='Residente' && currentUserData?
                             <div>
                                 <TextField variant="outlined" id="select" label="Vivienda" select required fullWidth
@@ -147,9 +148,9 @@ const Login=()=>{
                                 </TextField>
                             </div>
                         :
-                        <></>
+                        <div></div>
                         }
-                        </>
+                        </div>
                         }
                         
                         <br></br>

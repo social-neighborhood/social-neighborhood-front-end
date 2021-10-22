@@ -1,15 +1,15 @@
 export const Users = [
     {
       id:1,
-      profilePicture: "/people/avatar.png",
+      profilePicture: "/people/avatar1.png",
       user: "Juan camilo posso",
       userMail:"a@a.com",
       rol: "Administrador",
     },
     {
       id:2,
-      profilePicture: "person/2.jpeg",
-      user: "Janell Shrum",
+      profilePicture: "/people/avatar2.png",
+      user: "Janeth Saenz",
       userMail:"b@a.com",
       rol: "Residente",
       residencias:[
@@ -19,8 +19,8 @@ export const Users = [
     },
     {
       id:3,
-      profilePicture: "person/3.jpeg",
-      user: "Alex Durden",
+      profilePicture: "/people/avatar3.png",
+      user: "Carolina Torres",
       userMail:"c@a.com",
       rol: "Residente",
       residencias:[
@@ -33,8 +33,8 @@ export const Users = [
     },
     {
       id:4,
-      profilePicture: "person/4.jpeg",
-      user: "Dora Hawks",
+      profilePicture: "/people/avatar1.png",
+      user: "Dario Armando",
       userMail:"d@a.com",
       rol: "Residente",
       residencias:[
@@ -46,3 +46,35 @@ export const Users = [
       ]
     }
   ];
+
+  export const Conjuntos = [
+    {
+      id:1,
+      nombre:"Elconjunto1",
+      tipoAgrupacion:"Torre",
+      tipoInmueble:"apartamento"
+
+    },
+    {
+      id:2,
+      nombre:"Elconjuntodos",
+      tipoAgrupacion:"",
+      tipoInmueble:"casa"
+    }];
+
+    export const unidadesVivienda = [
+      {
+        id:1,
+        Agrupacion:"Torre",
+        nAgrupacion:"25",
+        Inmueble:"apartamento",
+        nInmueble:"102"
+  
+      },
+      {
+        id:2,
+        Agrupacion:"Edificio",
+        nAgrupacion:"8A",
+        Inmueble:"cada",
+        nInmueble:"23"
+      }];

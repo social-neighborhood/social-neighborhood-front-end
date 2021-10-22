@@ -129,24 +129,6 @@ a{
   right: 5%;
   font-size: 4vw;
 }
-#ls{
-  position: relative;
-  overflow: hidden;
-}
-
-#ls::before{
-    width: 100%;
-    min-height: 80vw;
-    content: "";
-    position: absolute;
-    top:-20vw;
-    left: 0%;
-    z-index: -1;
-    background-image: url("/home/jcposso/Documentos/univ/AREP/PROYECTO/social-neighborhood/src/images/people.png");
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
-}
-
 @media screen and (max-width: 1200px){
   .gridcont p{
       font-size: 2vh;
