@@ -5,8 +5,6 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 
-
-import axios from 'axios';
 import Swal from 'sweetalert2';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import Visibility from '@material-ui/icons/Visibility';
@@ -16,6 +14,7 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
 import FormControl from '@material-ui/core/FormControl';
 
+import axios from 'axios';
 import {Users} from '../../testData';
 const Login=()=>{
 
@@ -59,6 +58,12 @@ const Login=()=>{
     const handleUser = e =>{
         const { name, value } = e.target;     
         //hacer solicitud al back del usuario actual
+        if (values.user && values.user!=''){
+            axios.get(`https://socialneighborhood.herokuapp.com/userByEmail/` + values.user
+            ).then(res =>{
+                console.log("this is the answer "+res)
+            })
+        }
         const currentData = Users.find((data) => (
             data.userMail === value
           ));
