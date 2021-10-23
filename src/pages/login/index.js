@@ -62,7 +62,9 @@ const Login=()=>{
             axios.get(`https://socialneighborhood.herokuapp.com/social/userByEmail/` + values.user
             ).then(res =>{
                 console.log("this is the answer "+res)
-            })
+            }).catch(
+                e =>{console.log(e)}
+            )
         }
         const currentData = Users.find((data) => (
             data.userMail === value
