@@ -59,9 +59,9 @@ const Login=()=>{
         const { name, value } = e.target;     
         //hacer solicitud al back del usuario actual
         if (value){
-            axios.get(`https://socialneighborhood.herokuapp.com/social/userByEmail/` + value
+            axios.get(`http://localhost:8080/social/userByEmail/` + value
             ).then(res =>{
-                console.log("Success: "+res)
+                console.log(res.data)
             }).catch(
                 e =>{console.log("Error: :c "+e)}
             )
