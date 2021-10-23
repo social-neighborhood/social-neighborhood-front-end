@@ -59,7 +59,7 @@ const Login=()=>{
         const { name, value } = e.target;     
         //hacer solicitud al back del usuario actual
         if (values.user && values.user!=''){
-            axios.get(`https://socialneighborhood.herokuapp.com/userByEmail/` + values.user
+            axios.get(`https://socialneighborhood.herokuapp.com/social/userByEmail/` + values.user
             ).then(res =>{
                 console.log("this is the answer "+res)
             })
