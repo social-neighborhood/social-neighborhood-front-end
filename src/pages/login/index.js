@@ -55,11 +55,11 @@ const Login=()=>{
     }
 
     const [currentUserData,SetCurrentUserData] = useState({});
-    const handleUser = async(e) =>{
+    const handleUser = (e) =>{
         const { name, value } = e.target;     
         //hacer solicitud al back del usuario actual
         if (value){
-            await axios.get(`https://socialneighborhood.herokuapp.com/social/userByEmail/` + value
+            axios.get(`https://socialneighborhood.herokuapp.com/social/userByEmail/` + value
             ).then(res =>{
                 console.log("Success: "+res)
             }).catch(
