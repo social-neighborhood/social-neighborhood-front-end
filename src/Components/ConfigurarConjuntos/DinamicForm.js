@@ -64,6 +64,7 @@ const DinamicForm = ({name,type,toggleNext}) => {
         toggleNext()
 
     };
+
     return (
         <Box component="form" onSubmit={handleSubmit} noValidate  textAlign='center' > 
             <div>

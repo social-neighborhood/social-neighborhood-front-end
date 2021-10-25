@@ -9,6 +9,7 @@ import {Users as Usuarios} from '../../testData';
 import {Conjuntos } from '../../testData';
 import {unidadesVivienda} from '../../testData';
 import MenuItem from '@material-ui/core/MenuItem';
+import Grid from '@mui/material/Grid';
 
 import './register.css';
 const defaultState = {
@@ -18,24 +19,25 @@ const defaultState = {
 function Viviendas ({onRemove,onChange}){
     return(
         <div>
-             <div>
-                <TextField variant="outlined" id="select" label="Conjunto" select required fullWidth
-                    onChange={onChange} >
-                        {Conjuntos?.map((conjunto)=>{
-                            return (
-                                <MenuItem id={conjunto.id}
-                                        key ={conjunto.id}
-                                        name={conjunto.nombre} 
-                                        value={conjunto.nombre}
-                                        >
-                                    {conjunto.nombre}
-                                </MenuItem>      
-                            )                 
-                        })
-                        }
-                </TextField>
-            </div>  
-            <div>
+            <Grid container spacing={2} justifyContent="center" alignItems="flex-start" >  
+                <Grid item xs={5} >                              
+                    <TextField variant="outlined" id="select" label="Conjunto" select required fullWidth
+                        onChange={onChange} >
+                            {Conjuntos?.map((conjunto)=>{
+                                return (
+                                    <MenuItem id={conjunto.id}
+                                            key ={conjunto.id}
+                                            name={conjunto.nombre} 
+                                            value={conjunto.nombre}
+                                            >
+                                        {conjunto.nombre}
+                                    </MenuItem>      
+                                )                 
+                            })
+                            }
+                    </TextField>
+                </Grid>
+            <Grid item xs={5} >                              
                 <TextField variant="outlined" id="select" label="Unidad" select required fullWidth
                     onChange={onChange} >
                         {unidadesVivienda?.map((uVivienda)=>{
@@ -54,8 +56,11 @@ function Viviendas ({onRemove,onChange}){
                         })
                         }
                 </TextField>
-            </div>  
-             <Button onClick={onRemove} variant="outlined" color="error">Eliminar</Button>
+            </Grid>
+            <Grid item xs={2} >                              
+                <Button onClick={onRemove} variant="outlined" color="error">Eliminar</Button>
+            </Grid>
+        </Grid>  
         </div>
     )
 }
@@ -114,9 +119,6 @@ const EditarUsuario = () => {
                 </TextField>
             </div>               
             <br/>
-            <Box textAlign='center'>
-                <Button type="submit" variant="contained" color="success"endIcon={<SendIcon />}>Confirmar</Button>
-            </Box>
         </Box>
         <div className="card">
             <Typography variant="h4" align="center" component="h1" gutterBottom >Viviendas</Typography>
@@ -130,6 +132,9 @@ const EditarUsuario = () => {
                 ))}
             <Button onClick={handleOnAdd} variant="contained" color="success">Agregar</Button>
             </div>
+        <Box textAlign='center'>
+            <Button type="submit" variant="contained" color="success"endIcon={<SendIcon />}>Confirmar</Button>
+        </Box>
         </div>
     )
 }

@@ -50,7 +50,7 @@ const styles = theme => ({
 });
 
 
-export default function Leftbar({user,changeSection}) {
+export default function Leftbar({user,changeSection,conjunto,vivienda}) {
   return (
     <div className="drawer" >
       <div className={styles.toolbar} />
@@ -58,14 +58,21 @@ export default function Leftbar({user,changeSection}) {
       <div className="sidebarWrapper">
         <ul className="sidebarList">
           <Avatar
-            alt={user.user}
+            alt={user.nombres}
             src={user.profilePicture}
             sx={{ width: 156, height: 156 }}
           />
           <div className="profileInfo">
-              <h4 className="profileInfoName">{user.user}</h4>
-              <p className="profileInfoDesc">{user.userMail}</p>
+              <h4 className="profileInfoName">{user.nombres+" "+user.apellidos}</h4>
+              <p className="profileInfoDesc">{user.email}</p>
               <p className="profileInfoDesc">{user.rol}</p>
+              {/* <p className="profileInfoDesc">Conjunto: {conjunto.nombre}</p> */}
+              {
+                user.rol =="Administrador"?
+                <p className="profileInfoDesc">Conjunto: el bosque</p>
+                :
+                <p className="profileInfoDesc">Vivienda: torre 5 apartamento 24</p>
+              }
           </div>
           <Divider />
           <MenuList>

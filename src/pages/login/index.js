@@ -13,7 +13,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
 import FormControl from '@material-ui/core/FormControl';
-
+import DropForm from '../../Components/Conjuntos/DropForm';
 import axios from 'axios';
 import {Users} from '../../testData';
 const Login=()=>{
@@ -23,68 +23,93 @@ const Login=()=>{
     const btnstyle={margin:'8px 0'}
     let history = useHistory();
 
-    const [values, setValues] = useState({
-        loginConfirm: true,
-        user: '',
-        password: '',
-        rol: 'Administrador',
-        vivienda:''
-      });
-    const handleChange = e => {
-        const { name, value } = e.target;
-        setValues({
-          ...values,
-          [name]: value
-        });
-        console.log(values);
+    const handleChange2 = e => {
+        const {id, value } = e.target;
+        currentUserData?.rol==="Administrador"?
+        setCurrentConjuntoData({"id": id,"nombre":value})
+        :
+        setCurrentViviendaData({"id": id,"nombre":value})
+        console.log(currentConjuntoData);
       };
+    const handleChange = e => {
+        const {name, value } = e.target;
+    };
 
     const [showPassword,setShowPassword] = useState(false);
     const toggleShowPassword =()=>{
         setShowPassword(!showPassword);
     }
     const [dashboard,setDashboard] = useState('Administrador');
-    const toggleDashboard =(e)=>{
-        values.rol=e.target.value;
-        setDashboard(e.target.value);
-    }
 
     const [residencia,setResidencia] = useState('vivienda');
     const toggleResidencia =(e)=>{
         setResidencia(e.target.value);
     }
+    const[currentUserData,setCurrentUserData] =useState(null)
+    const[currentConjuntoData,setCurrentConjuntoData] =useState({id:"1",nombre:"el bosque"})
+    const[currentViviendaData,setCurrentViviendaData] =useState({id:"1",nombre:"casa26"})
 
-    const [currentUserData,SetCurrentUserData] = useState({});
+    const sendCache =(rol)=>{
+        const body={}
+        let url=''
+        if(rol =="Administrador")
+            url =`http://localhost:8080/social/autorizado/`+currentConjuntoData.id+`/`+currentUserData.id+`/0/0/0`
+        else url =`http://localhost:8080/social/autorizado/null/`+currentUserData.id+`/null/`+currentViviendaData.id+`/null`
+        axios.post(url, body).then( function (response) {
+            console.log(response.status);
+            console.log(response.data);
+            console.log(response);
+            if (response.status === 200) {
+            Swal.fire(
+                'Youre logged',
+                'success'
+            )
+            } else {
+            Swal.fire("Something is Wrong :(!", "try again later", "error");
+            //history.push("/login");
+            }
+        })
+        .catch(function (errorx) {
+            Swal.fire(""+errorx, "try again later", "error");
+            //history.push("/login");
+        });
+    }
     const handleUser = (e) =>{
-        const { name, value } = e.target;     
+        const { name, value } = e.target;
         //hacer solicitud al back del usuario actual
         if (value){
             axios.get(`http://localhost:8080/social/userByEmail/` + value
             ).then(res =>{
-                console.log(res.data)
+                    const dat = res.data
+                    setCurrentUserData(dat)
+                    setCurrentUserData({...dat,rol:"Administrador",
+                        profilePicture:"/people/avatar1.png",
+                        nameConjunto:"pinar"
+                    })
+                    console.log(currentUserData.email)
             }).catch(
                 e =>{console.log("Error: :c "+e)}
             )
         }
-        const currentData = Users.find((data) => (
-            data.userMail === value
-          ));
-        if(currentData!=null)values.rol = currentData.rol
-        SetCurrentUserData(currentData)
-        handleChange(e)
     }
-
-    const handleSubmit =  e => {
+    const  handleSubmit = (e) => {        
+        console.log(currentUserData)
         e.preventDefault();
-        console.log(values);
-        if (values.rol && values.user && values.password) {
+        let redirect =''
+        localStorage.setItem('user', JSON.stringify(currentUserData));
+        currentUserData.rol=="Administrador"?
+        localStorage.setItem('conjunto', JSON.stringify(currentConjuntoData)):
+        localStorage.setItem('Vivienda', JSON.stringify(currentViviendaData))
+        sendCache(currentUserData.rol);
+        if (currentUserData.rol && currentUserData.nombres && currentUserData.password) {
             if (currentUserData.rol === 'Administrador') {
-                history.push('/adminDashboard/'+currentUserData.user);
+                redirect='/adminDashboard/'
             } else {
-                history.push('/residentDashboard/'+currentUserData.user);
-            }
+              redirect='/residentDashboard/'
+            }                                                                                                                                                                                                                                                                                                                       
+            console.log(redirect)
+            history.push(redirect);
         }
-
     };
 
     return(
@@ -98,7 +123,7 @@ const Login=()=>{
                     <div className="text login">
                         <div>
                             <TextField variant="outlined" id="user" name="user" label="Username" type="email"
-                                value={values.user}
+                                value={currentUserData?.email}
                                 onChange={handleUser} fullWidth autoFocus required />
                         </div>
                         <br></br>
@@ -108,7 +133,6 @@ const Login=()=>{
                                 <OutlinedInput fullWidth label="Password"
                                     id="outlined-adornment-password-login"
                                     type={showPassword? 'text' : 'password'}
-                                    value={values.password}
                                     name="password"
                                     autoComplete="off"
                                     onChange={handleChange}
@@ -133,33 +157,16 @@ const Login=()=>{
                         <br></br>
                         <br></br>
                         {currentUserData?.rol==="Administrador"?
-                        <div></div>
-                        :
+                            <DropForm param={'conjuntosByEmail/'+currentUserData?.email} location='social' enableSubmit={false} onChange={handleChange2}/>
+                            :
                         <div>
-                        {values.rol==='Residente' && currentUserData?
-                            <div>
-                                <TextField variant="outlined" id="select" label="Vivienda" select required fullWidth
-                                    onChange={toggleResidencia} value={residencia}>
-                                        {currentUserData.residencias?.map((residencia)=>{
-                                            return (
-                                                <MenuItem id={residencia}
-                                                        name="vivienda" 
-                                                        value={residencia}
-                                                        onChange={handleChange}
-                                                        >
-                                                    {residencia}
-                                                </MenuItem>      
-                                            )                 
-                                        })
-                                        }
-                                </TextField>
-                            </div>
-                        :
-                        <div></div>
-                        }
+                            {currentUserData?.rol==='Residente' ?
+                            <DropForm param={'getUnidadDeViviendaByEmail/'+currentUserData?.email} location='social' enableSubmit={false} onChange={handleChange2}/>
+                            :
+                            <div></div>
+                            }
                         </div>
                         }
-                        
                         <br></br>
                     </div>
                     <Button type='submit' color='primary' variant="contained" style={btnstyle} fullWidth>Sign in</Button>
@@ -169,4 +176,4 @@ const Login=()=>{
     )
 }
 
-export default Login    
+export default Login

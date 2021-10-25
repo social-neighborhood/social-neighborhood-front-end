@@ -12,6 +12,13 @@ import SendIcon from '@mui/icons-material/Send';
 import Paper from '@mui/material/Paper';
 import DinamicForm from './DinamicForm';
 import {Conjuntos} from '../../testData';
+import DropForm from '../Conjuntos/DropForm';
+import SaveTwoToneIcon from '@mui/icons-material/SaveTwoTone';
+
+
+import axios from 'axios';
+import Swal from "sweetalert2";
+
 const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -22,21 +29,19 @@ const defaultState = {
         tipoInmueble: {}
     }
 const ConfigurarConjuntos = () => {
-    const [currentConjuntoData,SetCurrentConjuntoData] = useState({});
+    const [currentConjuntoData,SetCurrentConjuntoData] = useState({
+        idConjunto:'',
+        tipoAgrupacion: '',
+        tipoInmueble: ''
+        });
     const [isEnableButtons,setEnableButtons] = useState(false);
-    const toggleConjunto =(e)=>{
-        SetCurrentConjuntoData(e.target.value)
-        setEnableButtons(true);
-        setValues(defaultState)
-        console.log(currentConjuntoData)
-    }
+
     const [isNext,setNext] = useState(false);
 
 
     const [isAgrupacion,setIsAgrupacion] = useState(false);
     const [isUnidad,setIsUnidad] = useState(false);
     const toggleAgrupacion =()=>{
-        setValues(defaultState)
         setIsAgrupacion(true);
         setIsUnidad(false);
         }
@@ -51,14 +56,45 @@ const ConfigurarConjuntos = () => {
          }
         }
     const toggleUnidad =()=>{
-        setValues(defaultState)
         setIsAgrupacion(false);
         setIsUnidad(true);
         }
-    const [values, setValues] = useState({
-        tipoAgrupacion: '',
-        tipoInmueble: ''
+    const handleChange = data => {
+        const { name, value } = data;
+        SetCurrentConjuntoData({
+            ...currentConjuntoData,
+            [name]: value
         });
+        console.log(currentConjuntoData)
+    };
+    const handleButtons =(e)=>{
+        handleChange(e.target.id);
+        setEnableButtons(true);
+        axios.get(`http://localhost:8080/admin/`+currentConjuntoData.idConjunto+`/tipoAgrupacion`
+            ).then(res =>{     
+                handleChange(res.data);
+                toggleAgrupacion();
+            }).catch(
+                e =>{console.log("No se encuentra tipo agrupacion: "+e)}
+            )
+        axios.get(`http://localhost:8080/admin/`+currentConjuntoData.idConjunto+`/tipoInmueble`
+        ).then(res =>{   
+            handleChange(res.data);
+            toggleUnidad();
+        }).catch(
+            e =>{console.log("No se encuentra tipo inmueble: "+e)}
+        )
+    }
+    const [nValues,setNvalues]= useState({
+        nVivienda:'',
+        nAgrupacion:''
+    });
+    const onChange = (name,value) => {
+        setNvalues(
+            {...nValues,
+                [name]:value
+            });
+      };
     return (
         <Box sx={{  flexGrow: 1 }} className="card">
         <Typography variant="h4" align="center" component="h1" gutterBottom>Configuracion de Conjuntos</Typography>
@@ -76,32 +112,7 @@ const ConfigurarConjuntos = () => {
                     </Paper>
                 </Grid>
                 <Grid item xs={6} >
-                    <Box component="form" onSubmit={handleSubmit} noValidate  textAlign='center' > 
-                        <br/>
-                        <br/>
-                        <div>
-                        <TextField variant="outlined" id="select" label="Conjunto" select required fullWidth
-                            onChange={toggleConjunto} >
-                                {Conjuntos?.map((conjunto)=>{
-                                    return (
-                                        <MenuItem id={conjunto.id}
-                                                name={conjunto.nombre} 
-                                                value={conjunto}
-                                                key ={conjunto.id}
-                                                >
-                                            {conjunto.nombre}
-                                        </MenuItem>      
-                                    )                 
-                                })
-                                }
-                        </TextField>
-                        </div>
-                        <br/>
-                       
-                   </Box>
                    <Stack direction="row" spacing={2} alignItems="center" justifyContent="center">
-                   {
-                       isEnableButtons?
                        <Stack direction="row" spacing={2} alignItems="left" justifyContent="center">
                            <Box textAlign='center'>
                         <Button onClick={toggleAgrupacion} variant="contained" color="info" size="small"
@@ -112,14 +123,77 @@ const ConfigurarConjuntos = () => {
                         </Box>
                        </Stack>:
                        <div></div>
-                   }
                     </Stack>
                     {
                         isAgrupacion? 
-                            <DinamicForm name="Agrupacion" type={currentConjuntoData.tipoAgrupacion} toggleNext={toggleNext}/>
+                            //tendria una lista de ids ahora hacer match de esas ids  con su nombre
+                            //por cada dato en tipo de agrupaciones propias hacer: 
+                            // axios.get tipo agrupacionbyId y si resulta meterlo a un menuList y sale
+                            //añadir input del numero y se sube con un post a newAgrupacion
+                            //al otro lado hace get agrupacion y hace match con el nombre respectivo
+                            //por ello se va crear un nuevo tipo de form llamado dropMetaForm.js
+                            <div>
+                            <br/>
+                            <Grid container spacing={2} justifyContent="center" alignItems="flex-start" >                               
+                                <Grid item xs={8} > 
+                                    <DropForm param='TipoAgrupacionesPropia'
+                                    location='admin' enableSubmit={false} />
+                                </Grid>
+                                <Grid item xs={4}> 
+                                    <TextField
+                                        required
+                                        id="nAgrupacion"
+                                        name="nAgrupacion"
+                                        label="#"
+                                        variant="outlined"
+                                        value={nValues.nAgrupacion}
+                                        onChange={e=> onChange("nAgrupacion",e.target.value)}
+                                    />
+                                </Grid>
+                            </Grid>
+                            <br/>
+                            <Box textAlign='center'>
+                                <Button type="submit" variant="contained" color="success"endIcon={<SaveTwoToneIcon/>}>Confirmar</Button>
+                            </Box>
+                            </div>
                         :
                         isUnidad?
-                            <DinamicForm name="Unidad" type={currentConjuntoData.tipoInmueble} toggleNext={toggleNext}/>
+                            <div>
+                            <br/>
+                            <DropForm param='agrupacion'
+                            location='admin' enableSubmit={false} />
+                            <Grid container spacing={2} justifyContent="center" alignItems="flex-start" >  
+                            <Grid item xs={8} >                              
+                                <DropForm param='TipoInmueblesPropia'
+                                location='admin' enableSubmit={false} />
+                            </Grid>
+                            <Grid item xs={4} >                              
+                            <TextField
+                                required
+                                id="nVivienda"
+                                name="nVivienda"
+                                label="#"
+                                variant="outlined"
+                                value={nValues.nVivienda}
+                                onChange={e=> onChange("nVivienda",e.target.value)}
+                            />                            
+                            </Grid>
+                            <TextField
+                                        required
+                                        id="costoAdministracion"
+                                        name="costoAdministracion"
+                                        label="Costo de Administracion"
+                                        variant="outlined"
+                                        type="number"
+                                        value={nValues.nAgrupacion}
+                                        onChange={e=> onChange("nAgrupacion",e.target.value)}
+                                    />
+                            </Grid>
+                            <br/>
+                            <Box textAlign='center'>
+                                <Button type="submit" variant="contained" color="success"endIcon={<SaveTwoToneIcon/>}>Confirmar</Button>
+                            </Box>
+                            </div>
                             :
                         <div></div>
                     }

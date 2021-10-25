@@ -10,10 +10,15 @@ import './admin.css';
 import ConfigurarConjuntos from '../../Components/ConfigurarConjuntos';
 import EditarUsuario from '../../Components/EditarUsuario';
 
+
+import axios from 'axios';
+import Swal from "sweetalert2";
 const AdminDashboard = () => {
     const [user, setUser] = useState({});
-    const username = useParams().username;
     const [section, setSection] = useState('Feed');
+    const [currentUser,setCurrentUser] = useState(JSON.parse(localStorage.getItem('user')));
+    const [currentConjunto,setCurrentConjunto] = useState(JSON.parse(localStorage.getItem('conjunto')));
+    const [currentVivienda,setCurrentVivienda] = useState(JSON.parse(localStorage.getItem('vivienda')));
     const changeSection = some => () =>{
         console.log(section)
         setSection(some)
@@ -36,21 +41,26 @@ const AdminDashboard = () => {
      }
     useEffect(() => {
         const fetchUser = async () => {
+        if (!currentUser) {
+            await Swal.fire(
+                'No está autentificado',
+                'Por favor inicie sesion para usar esta funcionalidad',
+                'error'
+            )
+            // eliminar localStorage
+            localStorage.clear();
+            // redireccionar a login
+            window.location.replace("/login")
+        }
         //const res = await axios.get(`/users?username=${username}`);
-        const currentUser = Users.find((data) => (
-            data.user === username
-        ));
-        //setUser(res.data);
-        setUser(currentUser);
-        };
+        console.log("current-------User")
+        console.log(currentUser)
+        }
         fetchUser();
-    }, [username]);
-
-    
-
+    },[]);
     return (
         <div className="adminContainer">
-            <Leftbar user={user} changeSection={changeSection}/>
+            <Leftbar user={currentUser} conjunto={currentConjunto} changeSection={changeSection}/>
             {switchSection(section)
             }
             <Rightbar/>   

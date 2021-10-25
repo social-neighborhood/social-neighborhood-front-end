@@ -22,10 +22,10 @@ function App() {
         <Route exact path='/Home'>
           <Home/>
         </Route>
-        <Route exact path='/AdminDashboard/:username'>
+        <Route exact path='/AdminDashboard/'>
           <AdminDashBoard/>
         </Route>
-        <Route exact path='/ResidentDashboard/:username'>
+        <Route exact path='/ResidentDashboard/'>
           <ResidentDashBoard/>
         </Route>
         <Route exact path='/Login' >
