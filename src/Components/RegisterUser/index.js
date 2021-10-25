@@ -26,7 +26,7 @@ const RegisterUser = () => {
                 email:data.get("email"),
                 contraseña:data.get("contraseña")
         }
-        axios.post(`http://localhost:8080/social/newUsuario`, body)
+        axios.post(`https://socialneighborhood.herokuapp.com/social/newUsuario`, body)
         .then( function (response) {
         console.log(response.status);
         console.log(response.data);
