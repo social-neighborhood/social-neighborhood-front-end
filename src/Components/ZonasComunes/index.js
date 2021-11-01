@@ -64,14 +64,14 @@ const ZonasComunes = () => {
     const handleButtons =(e)=>{
         handleChange(e.target.id);
         setEnableButtons(true);
-        axios.get(`http://localhost:8080/admin/`+currentConjuntoData.idConjunto+`/tipoAgrupacion`
+        axios.get(`https://socialneighborhood.herokuapp.com/admin/`+currentConjuntoData.idConjunto+`/tipoAgrupacion`
             ).then(res =>{     
                 handleChange(res.data);
                 toggleAgrupacion();
             }).catch(
                 e =>{console.log("No se encuentra tipo agrupacion: "+e)}
             )
-        axios.get(`http://localhost:8080/admin/`+currentConjuntoData.idConjunto+`/tipoInmueble`
+        axios.get(`https://socialneighborhood.herokuapp.com/admin/`+currentConjuntoData.idConjunto+`/tipoInmueble`
         ).then(res =>{   
             handleChange(res.data);
             toggleUnidad();
