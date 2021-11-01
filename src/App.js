@@ -10,7 +10,7 @@ import Register from './pages/register';
 import Conjuntos from './Components/Conjuntos';
 import ConfigurarConjuntos from './Components/ConfigurarConjuntos';
 import EditarUsuario from './Components/EditarUsuario';
-
+import ZonasComunes from './Components/ZonasComunes';
 
 function App() {
   return (
@@ -42,6 +42,9 @@ function App() {
         </Route>
         <Route exact path='/EditarUsuario'>
           <EditarUsuario/>
+        </Route>
+        <Route exact path='/ZonasComunes'>
+          <ZonasComunes/>
         </Route>
         <Route exact path='*'>
           <Home/>

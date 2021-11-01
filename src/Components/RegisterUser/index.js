@@ -6,17 +6,15 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import SendIcon from '@mui/icons-material/Send';
 
-import './register.css';
+import './registerUser.css';
 
 import axios from 'axios';
 import Swal from "sweetalert2";
-
 const RegisterUser = () => {
     const handleSubmit = (event) => {
-        const body={}
+        let body={}
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        console.log(data);
         body={
                 tdoc:data.get("tdoc"),
                 ndoc:data.get("ndoc"),
@@ -24,12 +22,11 @@ const RegisterUser = () => {
                 apellidos:data.get("apellidos"),
                 fechadenacimiento:data.get("fechadenacimiento"),
                 email:data.get("email"),
-                contraseña:data.get("contraseña")
+                password:data.get("password"),
+                tipousuario:"Residente"
         }
-        axios.post(`https://socialneighborhood.herokuapp.com/social/newUsuario`, body)
+        axios.post(`http://localhost:8080/social/newUsuario`, body)
         .then( function (response) {
-        console.log(response.status);
-        console.log(response.data);
         if (response.status === 200) {
         Swal.fire(
                 'Usuario agregado correctamente',
@@ -46,20 +43,22 @@ const RegisterUser = () => {
 
 
     return (
-        <div>
+        <div className="RegisterComponent">
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }} className="card">
            <Typography variant="h4" align="center" component="h1" gutterBottom>Crear usuario</Typography>
            <Stack direction="row" spacing={2} justifyContent="center" alignItems="center">
            <TextField
                     required
-                    id="nombre"
+                    id="tdoc"
+                    name="tdoc"
                     label="Tipo"
                     variant="standard"
                     style ={{width: '10%'}}
                     />
             <TextField
                     required
-                    id="nombre"
+                    id="ndoc"
+                    name="ndoc"
                     label="numero de Documento"
                     variant="standard"
                     type="number"
@@ -69,7 +68,8 @@ const RegisterUser = () => {
             <Stack direction="row" spacing={2}>
             <TextField
                     required
-                    id="nombre"
+                    id="nombres"
+                    name="nombres"
                     label="nombre"
                     variant="outlined"
                     helperText="Nombres completos"
@@ -78,6 +78,7 @@ const RegisterUser = () => {
             <TextField
                     required
                     id="apellidos"
+                    name="apellidos"
                     label="apellidos"
                     variant="outlined"
                     helperText="Apellidos completos"
@@ -86,7 +87,8 @@ const RegisterUser = () => {
                     />
             <TextField
                     required
-                    id="apellidos"
+                    id="fechadenacimiento"
+                    name="fechadenacimiento"
                     type="date"
                     variant="outlined"
                     size="small"
@@ -95,14 +97,16 @@ const RegisterUser = () => {
             <Stack direction="row" spacing={2} justifyContent="center" alignItems="center">
             <TextField
                     required
-                    id="correo"
+                    id="email"
+                    name="email"
                     label="correo"
                     variant="outlined"
                     helperText="correo"
                     />
             <TextField
                     required
-                    id="contraseña"
+                    id="password"
+                    name="password"
                     label="contraseña"
                     variant="outlined"
                     type="password"

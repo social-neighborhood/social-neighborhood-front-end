@@ -1,4 +1,4 @@
-.card{
+.card_edit{
   background: rgba(255, 255, 255, 0.55);
   box-shadow: 0 8px 2px 0 rgba( 31, 38, 135, 0.37 );
   backdrop-filter: blur( 12px );
@@ -7,5 +7,5 @@
   border: 1px solid rgba( 255, 255, 255, 0.18 );
   padding:20px;
   margin:20px;
-  width:750px;
+  width:700px;
 }

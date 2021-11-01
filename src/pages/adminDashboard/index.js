@@ -10,9 +10,10 @@ import './admin.css';
 import ConfigurarConjuntos from '../../Components/ConfigurarConjuntos';
 import EditarUsuario from '../../Components/EditarUsuario';
 
-
 import axios from 'axios';
 import Swal from "sweetalert2";
+import zonasComunes from '../../Components/ZonasComunes';
+import ZonasComunes from '../../Components/ZonasComunes';
 const AdminDashboard = () => {
     const [user, setUser] = useState({});
     const [section, setSection] = useState('Feed');
@@ -35,6 +36,8 @@ const AdminDashboard = () => {
                 return <ConfigurarConjuntos/>;
             case 'EditarUsuario':
                 return <EditarUsuario/>;
+            case 'ZonasComunes':
+                return <ZonasComunes/>;
             default:
               return <Feed/>;
           }

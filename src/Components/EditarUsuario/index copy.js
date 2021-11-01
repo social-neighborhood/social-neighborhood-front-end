@@ -10,7 +10,7 @@ import {Conjuntos } from '../../testData';
 import {unidadesVivienda} from '../../testData';
 import MenuItem from '@material-ui/core/MenuItem';
 import Grid from '@mui/material/Grid';
-import DropForm from '../Conjuntos/DropForm'
+
 import './register.css';
 const defaultState = {
     conjunto: "",
@@ -20,31 +20,11 @@ function Viviendas ({onRemove,onChange}){
     return(
         <div>
             <Grid container spacing={2} justifyContent="center" alignItems="flex-start" >  
-            <Grid item xs={5} >                              
-                    {/* <TextField variant="outlined" id="select" label="Conjunto" select required fullWidth
-                        onChange={onChange} >
-                            {Conjuntos?.map((conjunto)=>{
-                                return (
-                                    <MenuItem id={conjunto.id}
-                                            key ={conjunto.id}
-                                            name={conjunto.nombre} 
-                                            value={conjunto.nombre}
-                                            >
-                                        {conjunto.nombre}
-                                    </MenuItem>      
-                                )                 
-                            })
-                            }
-                    </TextField> */}
-                 <TextField
-                    required
-                    id="tipoHabitante"
-                    label="tipo de Habitante"
-                    variant="outlined"
-                    />   
+                <Grid item xs={5} >                              
+                <DropForm param='Usuario'
+                            location='admin' enableSubmit={false} />
                 </Grid>
-            <Grid item xs={5} >    
-                                  
+            <Grid item xs={5} >                              
                 <TextField variant="outlined" id="select" label="Unidad" select required fullWidth
                     onChange={onChange} >
                         {unidadesVivienda?.map((uVivienda)=>{
@@ -63,6 +43,9 @@ function Viviendas ({onRemove,onChange}){
                         })
                         }
                 </TextField>
+            </Grid>
+            <Grid item xs={2} >                              
+                <Button onClick={onRemove} variant="outlined" color="error">Eliminar</Button>
             </Grid>
         </Grid>  
         </div>
@@ -103,20 +86,38 @@ const EditarUsuario = () => {
 
     return (
         <div>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }} className="card_edit" fullWidth>
+        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }} className="card_edit">
            <Typography variant="h4" align="center" gutterBottom>Usuarios</Typography>
            <div>
-            <DropForm param='Usuario'
-                                location='admin' enableSubmit={false} />
+                <TextField variant="outlined" id="select" label="Usuario" select required fullWidth
+                    onChange={toggleConjunto} >
+                        {Usuarios?.map((usuario)=>{
+                            return (
+                                <MenuItem id={usuario.id}
+                                        name={usuario.user} 
+                                        value={usuario}
+                                        key ={usuario.id}
+                                        >
+                                    {usuario.user}
+                                </MenuItem>      
+                            )                 
+                        })
+                        }
+                </TextField>
             </div>               
             <br/>
         </Box>
         <div className="card">
             <Typography variant="h4" align="center" component="h1" gutterBottom >Viviendas</Typography>
-                <Viviendas
-                    onChange={(name, value) => handleOnChange(name, value)}
-                    onRemove={() => handleOnRemove()}
+                {rows.map((row, index) => (
+                    <Viviendas
+                    {...row}
+                    onChange={(name, value) => handleOnChange(index, name, value)}
+                    onRemove={() => handleOnRemove(index)}
+                    key={index}
                     />
+                ))}
+            <Button onClick={handleOnAdd} variant="contained" color="success">Agregar</Button>
             </div>
         <Box textAlign='center'>
             <Button type="submit" variant="contained" color="success"endIcon={<SendIcon />}>Confirmar</Button>

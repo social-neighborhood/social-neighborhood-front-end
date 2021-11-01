@@ -5,21 +5,36 @@ import {
     HeroContent,
     HeroP,
     HeroH1,
-    HeroContentWrapper
+    HeroContentWrapper,
+    HColumn1,
+    HColumn2,
+    HeroRow,
+    Button,
+    HeroBtnWrapper
 } from './LoginElements';
 import './LoginFormElements.css';
 import people from './../../img/background.jpg';
 const HomeSection = () => {
     return (
-        <HeroContainer id="home">
-            <HeroBg src={people} alt="none">
-            </HeroBg>
+        <HeroContainer id="home">   
             <HeroContent>
                 <HeroContentWrapper>
-                    <HeroH1>Social Neighborhood</HeroH1>
-                    <HeroP> 
-                        Una red social hecha a tu media, comparte y disfruta con tus amigos!
-                    </HeroP>
+                <HeroRow>
+                    <HColumn1>
+                        <HeroH1>Comparte,disfruta y conectate</HeroH1>
+                        <HeroP> 
+                           Nunca fue tan facil compartir en tu conjunto, con tus amigos y los que mas 
+                           quieres, empieza ahora!
+                        </HeroP>
+                        <HeroBtnWrapper>
+                            <Button  to='/Register'>Registrarse</Button>
+                        </HeroBtnWrapper>
+                    </HColumn1>
+                    <HColumn2>
+                        <img src="./BackgroundHERO.png" heigh="500px" width="500px">
+                        </img>
+                    </HColumn2>
+                    </HeroRow>
                 </HeroContentWrapper>
             </HeroContent>
         </HeroContainer>

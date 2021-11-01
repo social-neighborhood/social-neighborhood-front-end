@@ -13,7 +13,7 @@ export const Nav =styled.nav`
         rgba(0,0,0,0.2) 0%,
         transparent 100%
     );
-    height: 80px;
+    height: 60px;
     margin-top: -80px;
     display: flex;
     justify-content: center;
@@ -30,7 +30,7 @@ export const Nav =styled.nav`
 export const NavbarContainer =styled.div`
     display: flex;
     justify-content: space-between;
-    height:80px;
+    height: 80px;
     z-index:1;
     width:100%;
     padding:   0 24px;
@@ -89,6 +89,7 @@ export const  NavLinks =styled(LinkS)`
     &:active{
         border-bottom: 3px solid Teal;
     }
+    font-weight:bold;
 `;
 
 export const NavBtnWrapper =styled.div`

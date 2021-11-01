@@ -4,31 +4,39 @@ import Rightbar from '../../Components/Rightbar';
 import {useParams} from 'react-router';
 import React,{useState,useEffect} from 'react'
 import { Users } from "../../testData";
+import Swal from "sweetalert2";
 import './resident.css';
 
 const ResidentDashboard = () => {
-    const [user, setUser] = useState({});
-    const username = useParams().username;
+    const [currentUser,setCurrentUser] = useState(JSON.parse(localStorage.getItem('user')));    
     const [section, setSection] = useState('Feed');
     const changeSection = some => () =>{
         console.log(section)
         setSection(some)
      }
-    useEffect(() => {
+     useEffect(() => {
         const fetchUser = async () => {
+        if (!currentUser) {
+            await Swal.fire(
+                'No está autentificado',
+                'Por favor inicie sesion para usar esta funcionalidad',
+                'error'
+            )
+            // eliminar localStorage
+            localStorage.clear();
+            // redireccionar a login
+            window.location.replace("/login")
+        }
         //const res = await axios.get(`/users?username=${username}`);
-        const currentUser = Users.find((data) => (
-            data.user === username
-        ));
-        //setUser(res.data);
-        setUser(currentUser);
-        };
+        console.log("current-------User")
+        console.log(currentUser)
+        }
         fetchUser();
-    }, [username]);
+    },[]);
 
     return (
         <div className="residentContainer">
-            <Leftbar user={user} changeSection={changeSection}/>
+            <Leftbar user={currentUser} changeSection={changeSection}/>
             <Feed/>
             <Rightbar/>
         </div>

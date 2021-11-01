@@ -1,42 +1,55 @@
 import "./post.css";
-import { MoreVert } from "@material-ui/icons";
-import { useContext, useEffect, useState } from "react";
-import axios from "axios";
-import { Link } from "react-router-dom";
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
+import CardMedia from '@mui/material/CardMedia';
+import CardContent from '@mui/material/CardContent';
+import CardActions from '@mui/material/CardActions';
+import Collapse from '@mui/material/Collapse';
+import Avatar from '@mui/material/Avatar';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import { red } from '@mui/material/colors';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import ShareIcon from '@mui/icons-material/Share';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+
 
 export default function Post({ post }) {
   return (
-    <div className="post">
-      <div className="postWrapper">
-        <div className="postTop">
-          <div className="postTopLeft">            
-              <img
-                className="postProfileImg"
-                src={
-                  ""
-                }
-                alt=""
-              />
-            <span className="postUsername">NombreAutor</span>
-            <span className="postDate">Feha de publicacion</span>
-          </div>
-          <div className="postTopRight">
-            <MoreVert />
-          </div>
-        </div>
-        <div className="postCenter">
-          <span className="postText">Datos de la publicacion</span>
-          <img className="postImg" src="" alt="" />
-        </div>
-        <div className="postBottom">
-          <div className="postBottomLeft">
-            <span className="postLikeCounter">Likes</span>
-          </div>
-          <div className="postBottomRight">
-            <span className="postCommentText">comentarios</span>
-          </div>
-        </div>
-      </div>
-    </div>
+   <div className="card_post">
+      <Card >
+      <CardHeader
+        avatar={
+          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+            JP
+          </Avatar>
+        }
+        action={
+          <IconButton aria-label="settings">
+            <MoreVertIcon />
+          </IconButton>
+        }
+        title="Juan camilo posso guevara"
+        subheader="Octubre 21, 2021"
+      />
+      <CardMedia
+        component="img"
+        height="194"
+        image="/post/asado.jpg"
+        alt="asado"
+      />
+      <CardContent>
+        <Typography variant="body2" color="text.secondary">
+          Bienvenidos!, tendremos un asado este sabado no faltes!!
+        </Typography>
+      </CardContent>
+      <CardActions disableSpacing>
+        <IconButton aria-label="add to favorites">
+          <FavoriteIcon />
+        </IconButton>
+      </CardActions>
+    </Card>
+   </div>
   );
-}
+} 

@@ -64,7 +64,7 @@ const Navbar = ({toggle}) => {
                                 >Contáctanos</NavLinks>
                         </NavItems>
                         <NavBtnWrapper>
-                            <Button  to='/Login'>Ingresar </Button>
+                            <Button  to='/Login'>Iniciar sesion </Button>
                         </NavBtnWrapper>
                     </NavMenu>
 

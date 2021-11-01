@@ -2,10 +2,9 @@ import styled from  'styled-components';
 import { Link as LinkR } from 'react-router-dom';
 import {MdKeyboardArrowRight,MdArrowForward} from 'react-icons/md';
 export const HeroContainer = styled.div`
-    background :#0c0c0c;
+    background: linear-gradient(45deg, #5757D9 0%, #21D9F7 100%);;
     display: flex;
     justify-content: center;
-    height: 600px;
     position: relative;
     z-index:1;
     :before{
@@ -21,21 +20,18 @@ export const HeroContainer = styled.div`
 
 export const HeroBg =styled.img`
     position:absolute;
-    top: 30px;
     right : 0;
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 95%;
-    overflow: hidden;
-    
+    height: 100%;
+    overflow: hidden;  
 `;
 
 export const HeroContent =styled.div`
     z-index:3;
-    max-width: 1700px;
-    position: absolute;
-    padding: 170px 0px;
+    padding-top: 190px;
+    padding-bottom: 40px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -53,7 +49,7 @@ export const HeroContentWrapper = styled.div`
         transparent 100%
     );
     z-index:1;
-    height: 400px;
+    height: 450px;
     width: 100%;
     padding: 5px;
     max-width: 1200px;
@@ -84,8 +80,8 @@ export const HColumn2 = styled.div`
 `;
 export const HeroH1 = styled.h1`
     color: #fff;
-    font-size: 65px;
-    text-align: center;
+    font-size: 60px;
+    text-align: left;
     @media screen  and (max-width:750px){
         font-size:40px;
     }
@@ -95,10 +91,9 @@ export const HeroH1 = styled.h1`
 `;
 
 export const HeroP = styled.p`
-    margin-top: 44px;
     color: #fff;
-    font-size: 24px;
-    text-align: center;
+    font-size: 18px;
+    text-align: left;
     max-width: 600px;
     @media screen  and (max-width:750px){
         font-size:24px;

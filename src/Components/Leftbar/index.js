@@ -4,11 +4,20 @@ import Avatar from '@mui/material/Avatar';
 
 import Divider from '@material-ui/core/Divider';
 
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import MenuList from '@material-ui/core/MenuList';
-import MenuItem from '@material-ui/core/MenuItem';
-
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemButton from '@mui/material/ListItemButton';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+import Collapse from '@mui/material/Collapse';
+import SettingsIcon from '@mui/icons-material/Settings';
+import List from '@mui/material/List';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import HomeWorkIcon from '@mui/icons-material/HomeWork';
+import MapsHomeWorkTwoToneIcon from '@mui/icons-material/MapsHomeWorkTwoTone';
+import BeachAccessTwoToneIcon from '@mui/icons-material/BeachAccessTwoTone';
+import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
+import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
 
 import {
   Bookmark
@@ -49,8 +58,13 @@ const styles = theme => ({
   },
 });
 
-
 export default function Leftbar({user,changeSection,conjunto,vivienda}) {
+  const [open, setOpen] = useState(false);
+
+  const handleClick = () => {
+    setOpen(!open);
+  };
+  
   return (
     <div className="drawer" >
       <div className={styles.toolbar} />
@@ -65,44 +79,58 @@ export default function Leftbar({user,changeSection,conjunto,vivienda}) {
           <div className="profileInfo">
               <h4 className="profileInfoName">{user.nombres+" "+user.apellidos}</h4>
               <p className="profileInfoDesc">{user.email}</p>
-              <p className="profileInfoDesc">{user.rol}</p>
+              <p className="profileInfoDesc">{user.tipousuario}</p>
               {/* <p className="profileInfoDesc">Conjunto: {conjunto.nombre}</p> */}
               {
-                user.rol =="Administrador"?
+                user.tipousuario =="Administrador"?
                 <p className="profileInfoDesc">Conjunto: el bosque</p>
                 :
                 <p className="profileInfoDesc">Vivienda: torre 5 apartamento 24</p>
               }
           </div>
           <Divider />
-          <MenuList>
-            {user.rol=="Administrador"?
+          <List>
+            {user.tipousuario=="Administrador"?
               <div>
-                <MenuItem name="CrearUsuario" className="crearUsuario" onClick={changeSection('crearUsuario') }>
-                  <ListItemIcon><Bookmark className="sidebarIcon"/> </ListItemIcon>
-                  <ListItemText>CrearUsuario</ListItemText>
-                </MenuItem>
-                <MenuItem name="Conjuntos" className="Conjuntos" onClick={changeSection('Conjuntos') }>
-                  <ListItemIcon><Bookmark className="sidebarIcon"/> </ListItemIcon>
-                  <ListItemText>Conjuntos</ListItemText>
-                </MenuItem>
-                <MenuItem name="ConfigurarConjuntos" className="ConfigurarConjuntos" onClick={changeSection('ConfigurarConjuntos') }>
-                  <ListItemIcon><Bookmark className="sidebarIcon"/> </ListItemIcon>
-                  <ListItemText>Config. Conjuntos</ListItemText>
-                </MenuItem>
-                <MenuItem name="EditarUsuario" className="EditarUsuario" onClick={changeSection('EditarUsuario') }>
-                  <ListItemIcon><Bookmark className="sidebarIcon"/> </ListItemIcon>
-                  <ListItemText>EditarUsuario</ListItemText>
-                </MenuItem>
+                <ListItemButton name="Configuracion" className="Configuracion" onClick={handleClick}>
+                  <ListItemIcon><SettingsIcon className="sidebarIcon"/> </ListItemIcon>
+                  <ListItemText>Configuracion</ListItemText>
+                    {open ? <ExpandLess /> : <ExpandMore />}
+                </ListItemButton>
+                <Collapse in={open} timeout="auto" unmountOnExit>
+                    <List component="div" disablePadding>
+                      <ListItemButton name="CrearUsuario" className="crearUsuario" onClick={changeSection('crearUsuario') } sx={{ pl: 4 }}>
+                        <ListItemIcon><PersonAddIcon className="sidebarIcon"/> </ListItemIcon>
+                        <ListItemText>CrearUsuario</ListItemText>
+                      </ListItemButton>
+                      <ListItemButton name="Conjuntos" className="Conjuntos" onClick={changeSection('Conjuntos') }sx={{ pl: 4 }}>
+                        <ListItemIcon><HomeWorkIcon className="sidebarIcon"/> </ListItemIcon>
+                        <ListItemText> Conjunto</ListItemText>
+                      </ListItemButton>
+                      <ListItemButton name="ConfigurarConjuntos" className="ConfigurarConjuntos" onClick={changeSection('ConfigurarConjuntos') }sx={{ pl: 4 }}>
+                        <ListItemIcon><MapsHomeWorkTwoToneIcon className="sidebarIcon"/> </ListItemIcon>
+                        <ListItemText>Añadir Inmuebles</ListItemText>
+                      </ListItemButton>
+                      <ListItemButton name="EditarUsuario" className="EditarUsuario" onClick={changeSection('EditarUsuario') }sx={{ pl: 4 }}>
+                        <ListItemIcon><HomeRoundedIcon className="sidebarIcon"/> </ListItemIcon>
+                        <ListItemText>Asignar viviendas</ListItemText>
+                      </ListItemButton>
+                      <ListItemButton name="ZonasComunes" className="ZonasComunes" onClick={changeSection('ZonasComunes') }sx={{ pl: 4 }}>
+                        <ListItemIcon><BeachAccessTwoToneIcon className="sidebarIcon"/> </ListItemIcon>
+                        <ListItemText>Zonas Comunes</ListItemText>
+                      </ListItemButton>
+                    </List>
+                </Collapse>
+                
               </div>
               :
               <div></div>
             }
-            <MenuItem value="dd" name="CrearUsuario" className="crearUsuario" onClick={changeSection('Feed') }>
-              <ListItemIcon><Bookmark className="sidebarIcon"/> </ListItemIcon>
+            <ListItemButton value="dd" name="CrearUsuario" className="crearUsuario" onClick={changeSection('Feed') }>
+              <ListItemIcon><EmojiEmotionsIcon className="sidebarIcon"/> </ListItemIcon>
               <ListItemText>Feed</ListItemText>
-            </MenuItem>
-          </MenuList>          
+            </ListItemButton>
+          </List>          
         </ul>
         <hr className="sidebarHr" />
       </div>
