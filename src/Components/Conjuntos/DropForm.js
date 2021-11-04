@@ -15,7 +15,7 @@ const defaultState = {
 const DropForm = ({param,location,onChange,enableSubmit,param2,currentConjunto,submited}) => {
     const [datas,setDatas] = useState([]);
     const fetchData = useCallback(async () => {
-            await axios.get(`http://localhost:8080/`+location+`/`+ param
+            await axios.get(`https://socialneighborhood.herokuapp.com/`+location+`/`+ param
             )
             .then( (res) =>{ 
                 setDatas([res.data])
@@ -39,7 +39,7 @@ const DropForm = ({param,location,onChange,enableSubmit,param2,currentConjunto,s
         body={
             idconjunto:currentConjunto,
             tipoInmuebleConjunto:data.id}
-        axios.post(`http://localhost:8080/admin/`+param2, body)
+        axios.post(`https://socialneighborhood.herokuapp.com/admin/`+param2, body)
         .then( function (response) {
             console.log(response.status);
             console.log(response.data);

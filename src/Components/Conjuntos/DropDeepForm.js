@@ -49,7 +49,7 @@ const DropDeepForm = ({param,location,onChange,enableSubmit,param2,currentConjun
       };
     const fetchData = useCallback(async () => {
             // get unidades de vivienda by Email
-            await axios.get(`http://localhost:8080/`+location+`/`+ param
+            await axios.get(`https://socialneighborhood.herokuapp.com/`+location+`/`+ param
             ).then(res =>{  
                 const dataRes = res.data         
                 setDatas(dataRes)
@@ -59,17 +59,17 @@ const DropDeepForm = ({param,location,onChange,enableSubmit,param2,currentConjun
                     let agrupacionId = index.idAgrupacion
                     let tipoInmuebleConjuntoId = index.idTipoInmuebleConjunto
                     // busqueda profunda por agrupacion
-                    axios.get(`http://localhost:8080/`+location+`/`+ `agrupacionById`+`/`+agrupacionId
+                    axios.get(`https://socialneighborhood.herokuapp.com/`+location+`/`+ `agrupacionById`+`/`+agrupacionId
                     ).then(res =>{   
                         const datares2 = res.data
                         handleOnChange(index,"numAgrupacion",datares2.numAgrupacion)
                         let tipoAgrupacionConjuntoId = datares2.idtipoagrupacionconjunto
-                        axios.get(`http://localhost:8080/`+location+`/`+ `tipoAgrupacionConjuntoById`+`/`+tipoAgrupacionConjuntoId
+                        axios.get(`https://socialneighborhood.herokuapp.com/`+location+`/`+ `tipoAgrupacionConjuntoById`+`/`+tipoAgrupacionConjuntoId
                         ).then(res =>{    
                             const datares3 = res.data       
                             handleOnChange(index,"idconjunto",datares3.numAgrupacion)
                             let idTipoAgrupacion = datares3.idtipoagrupacion
-                            axios.get(`http://localhost:8080/`+location+`/`+ `tipoAgrupacionById`+`/`+idTipoAgrupacion
+                            axios.get(`https://socialneighborhood.herokuapp.com/`+location+`/`+ `tipoAgrupacionById`+`/`+idTipoAgrupacion
                                 ).then(res =>{  
                                     const datares4 = res.data                
                                     handleOnChange(index,"nombreAgrupacion",datares4.nombre)       
@@ -83,11 +83,11 @@ const DropDeepForm = ({param,location,onChange,enableSubmit,param2,currentConjun
                         e =>{console.log("Error: El Id de agrupacion no fue encontrado "+e)}
                     )
                     //busqueda profunda por inmueble
-                    axios.get(`http://localhost:8080/`+location+`/`+ `tipoInmuebleConjuntoById`+`/`+tipoInmuebleConjuntoId
+                    axios.get(`https://socialneighborhood.herokuapp.com/`+location+`/`+ `tipoInmuebleConjuntoById`+`/`+tipoInmuebleConjuntoId
                         ).then(res =>{    
                             const datares5 = res.data
                             let tipoInmuebleId = datares5.idtipoinmueble  
-                            axios.get(`http://localhost:8080/`+location+`/`+ `tipoInmuebleById`+`/`+tipoInmuebleId
+                            axios.get(`https://socialneighborhood.herokuapp.com/`+location+`/`+ `tipoInmuebleById`+`/`+tipoInmuebleId
                             ).then(res =>{     
                                 const datares6 = res.data      
                                 handleOnChange(index,"nombreInmueble",datares6.nombre)       
@@ -119,7 +119,7 @@ const DropDeepForm = ({param,location,onChange,enableSubmit,param2,currentConjun
         body={
             idconjunto:currentConjunto,
             tipoInmuebleConjunto:data.id}
-        axios.post(`http://localhost:8080/admin/`+param2, body)
+        axios.post(`https://socialneighborhood.herokuapp.com/admin/`+param2, body)
         .then( function (response) {
             console.log(response.status);
             console.log(response.data);
