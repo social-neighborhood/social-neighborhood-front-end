@@ -14,6 +14,8 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
 import FormControl from '@material-ui/core/FormControl';
 import DropForm from '../../Components/Conjuntos/DropForm';
+import DropDeepForm from '../../Components/Conjuntos/DropDeepForm';
+import DropDeepFormConjuntos from '../../Components/Conjuntos/DropDeepFormConjuntos';
 import axios from 'axios';
 import {Users} from '../../testData';
 const Login=()=>{
@@ -31,8 +33,11 @@ const Login=()=>{
         setCurrentViviendaData({"id": id,"nombre":value})
         console.log(currentConjuntoData);
       };
-    const handleChange = e => {
-        const {name, value } = e.target;
+    const handleChange = (value) => {
+        console.log(value)
+        setCurrentConjuntoData(
+            {id:value.id,idconjunto:value.idconjunto,idusuarioadministrador:value.idusuarioadministrador})
+        console.log(currentConjuntoData);
     };
 
     const [showPassword,setShowPassword] = useState(false);
@@ -46,15 +51,15 @@ const Login=()=>{
         setResidencia(e.target.value);
     }
     const[currentUserData,setCurrentUserData] =useState(null)
-    const[currentConjuntoData,setCurrentConjuntoData] =useState({id:"1",nombre:"el bosque"})
-    const[currentViviendaData,setCurrentViviendaData] =useState({id:"1",nombre:"casa26"})
+    const[currentConjuntoData,setCurrentConjuntoData] =useState({id:0,idconjunto:0,idusuarioadministrador:0})
+    const[currentViviendaData,setCurrentViviendaData] =useState({id:"9",nombre:"casa26"})
 
     const sendCache =(rol)=>{
         const body={}
         let url=''
         if(rol =="Administrador")
-            url =`https://socialneighborhood.herokuapp.com/social/autorizado/`+currentConjuntoData.id+`/`+currentUserData.id+`/0/0/0/0/0/0/0/0`
-        else url =`https://socialneighborhood.herokuapp.com/social/autorizado/null/`+currentUserData.id+`/null/`+currentViviendaData.id+`/null`
+            url =`http://localhost:8080/social/autorizadoAdmin/`+currentConjuntoData.idconjunto+`/`+currentConjuntoData.idusuarioadministrador+`/`+currentConjuntoData.id
+        else url =`http://localhost:8080/social/autorizado/`+currentConjuntoData.id+`/`+currentUserData.id+`/`+currentViviendaData.id
         axios.post(url, body).then( function (response) {
             console.log(response.status);
             console.log(response.data);
@@ -78,11 +83,11 @@ const Login=()=>{
         const { name, value } = e.target;
         //hacer solicitud al back del usuario actual
         if (value){
-            axios.get(`https://socialneighborhood.herokuapp.com/social/userByEmail/` + value
+            axios.get(`http://localhost:8080/social/userByEmail/` + value
             ).then(res =>{
                     const dat = res.data
                     setCurrentUserData(dat)
-                    setCurrentUserData({...dat,rol:"Administrador",
+                    setCurrentUserData({...dat,
                         profilePicture:"/people/user.png",
                         nameConjunto:"pinar"
                     })
@@ -97,12 +102,13 @@ const Login=()=>{
         e.preventDefault();
         let redirect =''
         localStorage.setItem('user', JSON.stringify(currentUserData));
-        currentUserData.rol=="Administrador"?
+        currentUserData.tipousuario=="Administrador"?
         localStorage.setItem('conjunto', JSON.stringify(currentConjuntoData)):
         localStorage.setItem('Vivienda', JSON.stringify(currentViviendaData))
-        sendCache(currentUserData.rol);
-        if (currentUserData.rol && currentUserData.nombres && currentUserData.password) {
-            if (currentUserData.rol === 'Administrador') {
+        sendCache(currentUserData.tipousuario);
+        console.log(currentUserData)
+        if (currentUserData.tipousuario && currentUserData.nombres && currentUserData.password) {
+            if (currentUserData.tipousuario === 'Administrador') {
                 redirect='/adminDashboard/'
             } else {
               redirect='/residentDashboard/'
@@ -156,12 +162,12 @@ const Login=()=>{
                         </div >
                         <br></br>
                         <br></br>
-                        {currentUserData?.rol==="Administrador"?
-                            <DropForm param={'conjuntosByEmail/'+currentUserData?.email} location='social' enableSubmit={false} onChange={handleChange2}/>
+                        {currentUserData?.tipousuario==="Administrador"?
+                            <DropForm param={'conjuntosByEmail/'+currentUserData?.email} location='social' enableSubmit={false} onChange={handleChange}/>
                             :
                         <div>
-                            {currentUserData?.rol==='Residente' ?
-                            <DropForm param={'getUnidadDeViviendaByEmail/'+currentUserData?.email} location='social' enableSubmit={false} onChange={handleChange2}/>
+                            {currentUserData?.tipousuario==='Residente' ?
+                            <DropDeepForm param={'unidadesDeViviendaByEmail/'+currentUserData?.email} location='social' enableSubmit={false} />
                             :
                             <div></div>
                             }

@@ -8,17 +8,15 @@ import Button from '@mui/material/Button';
 import SendIcon from '@mui/icons-material/Send';
 import Swal from "sweetalert2";
 
-const defaultState = {
-    ans:''
-};
-
+const defaultState = [];
 const DropForm = ({param,location,onChange,enableSubmit,param2,currentConjunto,submited}) => {
-    const [datas,setDatas] = useState([]);
+    const [data,setData]= useState([defaultState])
     const fetchData = useCallback(async () => {
             await axios.get(`http://localhost:8080/`+location+`/`+ param
-            )
-            .then( (res) =>{ 
-                setDatas([res.data])
+            ).then(res =>{           
+                setData(res.data)
+                console.log(data)
+                
             }).catch(
                 e =>{console.log("Error: :c "+e)}
             )
@@ -62,15 +60,15 @@ const DropForm = ({param,location,onChange,enableSubmit,param2,currentConjunto,s
                 <Box component="form" onSubmit={handleSubmit} noValidate  > 
                 <TextField variant="outlined" id="select" label={param} select required fullWidth
                     onChange={fetchData} >
-                        {datas.map((element)=>{
+                        {data?.map((element)=>{
                             return (
                                 <MenuItem id={element.id}
                                         key ={element.id}
-                                        name={element.idconjunto} 
-                                        value={element.idconjunto} 
-                                        onClick={(e)=> onChange(element)}
+                                        name={element.nombre || element.nombres} 
+                                        value={element.nombre || element.nombres} 
+                                        onClick={onChange}
                                         >
-                                    {element.idconjunto}
+                                    {element.nombre || element.nombres}
                                 </MenuItem>      
                             )                 
                         })

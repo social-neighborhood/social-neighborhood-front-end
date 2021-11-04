@@ -25,7 +25,7 @@ const RegisterUser = () => {
                 password:data.get("password"),
                 tipousuario:"Residente"
         }
-        axios.post(`https://socialneighborhood.herokuapp.com/social/newUsuario`, body)
+        axios.post(`http://localhost:8080/social/newUsuario`, body)
         .then( function (response) {
         if (response.status === 200) {
         Swal.fire(
