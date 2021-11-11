@@ -1,5 +1,5 @@
 import "./leftbar.css";
-import React,{useState,useEffect} from 'react'
+import React,{useState,useEffect,useCallback} from 'react'
 import Avatar from '@mui/material/Avatar';
 
 import Divider from '@material-ui/core/Divider';
@@ -18,6 +18,7 @@ import MapsHomeWorkTwoToneIcon from '@mui/icons-material/MapsHomeWorkTwoTone';
 import BeachAccessTwoToneIcon from '@mui/icons-material/BeachAccessTwoTone';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
+import axios from 'axios';
 
 import {
   Bookmark
@@ -60,9 +61,36 @@ const styles = theme => ({
 
 export default function Leftbar({user,changeSection,conjunto,vivienda}) {
   const [open, setOpen] = useState(false);
+  const [nConjunto, setnConjunto] = useState([]);
+
+    const fetchData = useCallback(async () => {
+      await axios.get(window.$dir+`social/conjuntoById/`+ conjunto?.idconjunto
+      ).then(res =>{  
+          const res2 = res.data 
+          console.log(res2)       
+          setnConjunto(res2.nombre)
+      }).catch(
+          e =>{console.log("Error: :c "+e)}
+      )
+  },[])
+
+  useEffect(()=>{
+  fetchData()
+  },[fetchData])
+
 
   const handleClick = () => {
     setOpen(!open);
+  };
+  const onHandleId = (id) => {
+    axios.get(window.$dir+`social/conjuntoById/`+ id
+        ).then(res =>{  
+            const res2 = res.data 
+            console.log(res2)       
+            return res2.nombre
+        }).catch(
+            e =>{console.log("Error: :c "+e)}
+    )
   };
   
   return (
@@ -83,9 +111,10 @@ export default function Leftbar({user,changeSection,conjunto,vivienda}) {
               {/* <p className="profileInfoDesc">Conjunto: {conjunto.nombre}</p> */}
               {
                 user.tipousuario =="Administrador"?
-                <p className="profileInfoDesc">Conjunto: el bosque</p>
+                <p className="profileInfoDesc">Conjunto :{nConjunto}</p>
                 :
-                <p className="profileInfoDesc">Vivienda: torre 5 apartamento 24</p>
+                <p className="profileInfoDesc">Vivienda: {(vivienda.tipoagrupacion!='null'? vivienda.tipoagrupacion:'')+" "+(vivienda.numagrupacion!='null'?vivienda.numagrupacion:'')+" "+
+                vivienda.tipoinmueble+" "+vivienda.numinmueble}</p>
               }
           </div>
           <Divider />
@@ -126,7 +155,7 @@ export default function Leftbar({user,changeSection,conjunto,vivienda}) {
               :
               <div></div>
             }
-            <ListItemButton value="dd" name="CrearUsuario" className="crearUsuario" onClick={changeSection('Feed') }>
+            <ListItemButton name="Feed" className="Feed" onClick={changeSection('Feed') }>
               <ListItemIcon><EmojiEmotionsIcon className="sidebarIcon"/> </ListItemIcon>
               <ListItemText>Feed</ListItemText>
             </ListItemButton>

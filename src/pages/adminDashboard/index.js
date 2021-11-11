@@ -58,6 +58,10 @@ const AdminDashboard = () => {
         //const res = await axios.get(`/users?username=${username}`);
         console.log("current-------User")
         console.log(currentUser)
+        console.log("currentassssssssssssdasdUser")
+        console.log(currentVivienda)
+        console.log("currentasdasdUser")
+
         }
         fetchUser();
     },[]);

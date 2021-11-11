@@ -9,14 +9,20 @@ import SendIcon from '@mui/icons-material/Send';
 import Swal from "sweetalert2";
 
 const defaultState = [];
-const DropForm = ({param,location,onChange,enableSubmit,param2,currentConjunto,submited}) => {
-    const [data,setData]= useState([defaultState])
+const DropFormConjunto = ({param,location,onChange,enableSubmit,param2,currentConjunto,submited}) => {
+    const [data,setData]= useState([])
     const fetchData = useCallback(async () => {
-            await axios.get(`http://localhost:8080/`+location+`/`+ param
-            ).then(res =>{           
-                setData(res.data)
-                console.log(data)
-                
+            await axios.get(window.$dir+location+`/`+ param
+            ).then(res =>{  
+                const res1 = res.data         
+                axios.get(window.$dir+location+`/conjuntoById/`+ res1.idconjunto
+                    ).then(res =>{  
+                        const res2 = res.data         
+                        setData(res2)
+                        onChange(res1)
+                    }).catch(
+                        e =>{console.log("Error: :c "+e)}
+                )
             }).catch(
                 e =>{console.log("Error: :c "+e)}
             )
@@ -57,22 +63,14 @@ const DropForm = ({param,location,onChange,enableSubmit,param2,currentConjunto,s
     return (
         <div>
                 <div>
-                <Box component="form" onSubmit={handleSubmit} noValidate  > 
-                <TextField variant="outlined" id="select" label={param} select required fullWidth
-                    onChange={fetchData} >
-                        {data?.map((element)=>{
-                            return (
-                                <MenuItem id={element.id}
-                                        key ={element.id}
-                                        name={element.nombre || element.nombres} 
-                                        value={element.nombre || element.nombres} 
-                                        onClick={onChange}
-                                        >
-                                    {element.nombre || element.nombres}
-                                </MenuItem>      
-                            )                 
-                        })
-                        }
+                <Box component="form" onSubmit={handleSubmit}  noValidate  > 
+                <TextField 
+                    disabled fullWidth
+                    id = "conjuntoAdmin"
+                    variant="outlined" 
+                    onChange={fetchData} 
+                    value = {data.nombre}
+                    >
                 </TextField>
                 {
                 enableSubmit?
@@ -89,4 +87,4 @@ const DropForm = ({param,location,onChange,enableSubmit,param2,currentConjunto,s
     )
 }
 
-export default DropForm
+export default DropFormConjunto

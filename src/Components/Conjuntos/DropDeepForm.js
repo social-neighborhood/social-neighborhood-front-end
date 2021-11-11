@@ -28,7 +28,7 @@ const defaultState2 = {
 };
 const DropDeepForm = ({param,location,onChange,enableSubmit,param2,currentConjunto,submited}) => {
     const [data,setData]= useState(defaultState0)
-    const [datas,setDatas]= useState(null)
+    const [datas,setDatas]= useState([])
     const [viviendas,setViviendas]= useState([defaultState])
     const vivienda ={
         id:'',
@@ -49,56 +49,13 @@ const DropDeepForm = ({param,location,onChange,enableSubmit,param2,currentConjun
       };
     const fetchData = useCallback(async () => {
             // get unidades de vivienda by Email
-            await axios.get(`https://socialneighborhood.herokuapp.com/`+location+`/`+ param
+            await axios.get(window.$dir+location+`/`+ param
             ).then(res =>{  
-                const dataRes = res.data         
-                setDatas(dataRes)
-                console.log(datas)
+                const dataRes = res.data       
                 //por cada unidad de vivienda hacer
-                datas.map((index)=>{
-                    let agrupacionId = index.idAgrupacion
-                    let tipoInmuebleConjuntoId = index.idTipoInmuebleConjunto
-                    // busqueda profunda por agrupacion
-                    axios.get(`https://socialneighborhood.herokuapp.com/`+location+`/`+ `agrupacionById`+`/`+agrupacionId
-                    ).then(res =>{   
-                        const datares2 = res.data
-                        handleOnChange(index,"numAgrupacion",datares2.numAgrupacion)
-                        let tipoAgrupacionConjuntoId = datares2.idtipoagrupacionconjunto
-                        axios.get(`https://socialneighborhood.herokuapp.com/`+location+`/`+ `tipoAgrupacionConjuntoById`+`/`+tipoAgrupacionConjuntoId
-                        ).then(res =>{    
-                            const datares3 = res.data       
-                            handleOnChange(index,"idconjunto",datares3.numAgrupacion)
-                            let idTipoAgrupacion = datares3.idtipoagrupacion
-                            axios.get(`https://socialneighborhood.herokuapp.com/`+location+`/`+ `tipoAgrupacionById`+`/`+idTipoAgrupacion
-                                ).then(res =>{  
-                                    const datares4 = res.data                
-                                    handleOnChange(index,"nombreAgrupacion",datares4.nombre)       
-                                }).catch(
-                                    e =>{console.log("Error: El id del tipoAgrupacion no se encuentra "+e)}
-                                )
-                            }).catch(
-                                e =>{console.log("Error: El id del tipoAgrupacionConjunto no se encuentra "+e)}
-                            )           
-                    }).catch(
-                        e =>{console.log("Error: El Id de agrupacion no fue encontrado "+e)}
-                    )
-                    //busqueda profunda por inmueble
-                    axios.get(`https://socialneighborhood.herokuapp.com/`+location+`/`+ `tipoInmuebleConjuntoById`+`/`+tipoInmuebleConjuntoId
-                        ).then(res =>{    
-                            const datares5 = res.data
-                            let tipoInmuebleId = datares5.idtipoinmueble  
-                            axios.get(`https://socialneighborhood.herokuapp.com/`+location+`/`+ `tipoInmuebleById`+`/`+tipoInmuebleId
-                            ).then(res =>{     
-                                const datares6 = res.data      
-                                handleOnChange(index,"nombreInmueble",datares6.nombre)       
-                            }).catch(
-                                e =>{console.log("Error: El id del tipoInmueble no se encuentra "+e)}
-                            )
-                        }).catch(
-                            e =>{console.log("Error: El id del tipoInmuebleConjunto no se encuentra "+e)}
-                        )     
-                })
-                console.log(datas)      
+                setDatas(dataRes)
+                    console.log(datas)  
+                    console.log(dataRes)
             }).catch(
                 e =>{console.log("Error: No se encuentran unidades de vivienda para el Usuario "+e)}
             )
@@ -142,16 +99,19 @@ const DropDeepForm = ({param,location,onChange,enableSubmit,param2,currentConjun
                 <Box component="form" onSubmit={handleSubmit} noValidate  > 
                 <TextField variant="outlined" id="select" label={param} select required fullWidth
                     onChange={fetchData} >
-                        {datas?.map((element)=>{
+                        {datas?.map((uVivienda)=>{
                             return (
-                                <MenuItem id={element.id}
-                                        key ={element.id}
-                                        name={element.nombre || element.nombres} 
-                                        value={element.nombre || element.nombres} 
-                                        onClick={onChange}
+                                <MenuItem id={uVivienda.idunidaddevivienda}
+                                        key ={uVivienda.idunidaddevivienda}
+                                        name={uVivienda.idunidaddevivienda} 
+                                        value={uVivienda.nombreconjunto+": "+(uVivienda.tipoagrupacion!='null'? uVivienda.tipoagrupacion:'')+" "+(uVivienda.numagrupacion!='null'?uVivienda.numagrupacion:'')+" "+
+                                        uVivienda.tipoinmueble+" "+uVivienda.numinmueble
+                                                }
+                                        onClick= {(e)=> onChange(uVivienda)}
                                         >
-                                    {element.nombre || element.nombres}
-                                </MenuItem>      
+                                    {uVivienda.nombreconjunto+": "+(uVivienda.tipoagrupacion!='null'? uVivienda.tipoagrupacion:'')+" "+(uVivienda.numagrupacion!='null'?uVivienda.numagrupacion:'')+" "+
+                                                uVivienda.tipoinmueble+" "+uVivienda.numinmueble}
+                                </MenuItem>        
                             )                 
                         })
                         }

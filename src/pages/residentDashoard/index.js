@@ -8,7 +8,9 @@ import Swal from "sweetalert2";
 import './resident.css';
 
 const ResidentDashboard = () => {
-    const [currentUser,setCurrentUser] = useState(JSON.parse(localStorage.getItem('user')));    
+    const [currentUser,setCurrentUser] = useState(JSON.parse(localStorage.getItem('user')));
+    const [currentVivienda,setCurrentVivienda] = useState(JSON.parse(localStorage.getItem('vivienda')));
+    
     const [section, setSection] = useState('Feed');
     const changeSection = some => () =>{
         console.log(section)
@@ -30,13 +32,15 @@ const ResidentDashboard = () => {
         //const res = await axios.get(`/users?username=${username}`);
         console.log("current-------User")
         console.log(currentUser)
+        console.log(currentVivienda)
+
         }
         fetchUser();
     },[]);
 
     return (
         <div className="residentContainer">
-            <Leftbar user={currentUser} changeSection={changeSection}/>
+            <Leftbar user={currentUser} vivienda={currentVivienda} changeSection={changeSection}/>
             <Feed/>
             <Rightbar/>
         </div>

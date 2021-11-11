@@ -15,29 +15,25 @@ import IconButton from '@material-ui/core/IconButton';
 import FormControl from '@material-ui/core/FormControl';
 import DropForm from '../../Components/Conjuntos/DropForm';
 import DropDeepForm from '../../Components/Conjuntos/DropDeepForm';
-import DropDeepFormConjuntos from '../../Components/Conjuntos/DropDeepFormConjuntos';
+import DropFormConjunto from '../../Components/Conjuntos/DropFormConjunto';
 import axios from 'axios';
 import {Users} from '../../testData';
 const Login=()=>{
 
-    const paperStyle={padding :20,height:'70vh',width:280, margin:"20px auto"}
+    const paperStyle={padding :20,height:'70vh',width:310, margin:"20px auto"}
     const avatarStyle={backgroundColor:'#1bbd7e'}
     const btnstyle={margin:'8px 0'}
     let history = useHistory();
+    const[currentConjuntoData,setCurrentConjuntoData] =useState({})
+    const[currentViviendaData,setCurrentViviendaData] =useState({})
 
-    const handleChange2 = e => {
-        const {id, value } = e.target;
-        currentUserData?.rol==="Administrador"?
-        setCurrentConjuntoData({"id": id,"nombre":value})
-        :
-        setCurrentViviendaData({"id": id,"nombre":value})
-        console.log(currentConjuntoData);
-      };
     const handleChange = (value) => {
-        console.log(value)
-        setCurrentConjuntoData(
-            {id:value.id,idconjunto:value.idconjunto,idusuarioadministrador:value.idusuarioadministrador})
+        setCurrentConjuntoData(value)
         console.log(currentConjuntoData);
+    };
+    const handleChange2 = (value) => {
+        setCurrentViviendaData(value)
+        console.log(currentViviendaData);
     };
 
     const [showPassword,setShowPassword] = useState(false);
@@ -50,16 +46,14 @@ const Login=()=>{
     const toggleResidencia =(e)=>{
         setResidencia(e.target.value);
     }
-    const[currentUserData,setCurrentUserData] =useState(null)
-    const[currentConjuntoData,setCurrentConjuntoData] =useState({id:0,idconjunto:0,idusuarioadministrador:0})
-    const[currentViviendaData,setCurrentViviendaData] =useState({id:"9",nombre:"casa26"})
+    const[currentUserData,setCurrentUserData] =useState([])
 
     const sendCache =(rol)=>{
         const body={}
         let url=''
         if(rol =="Administrador")
-            url =`https://socialneighborhood.herokuapp.com/social/autorizadoAdmin/`+currentConjuntoData.idconjunto+`/`+currentConjuntoData.idusuarioadministrador+`/`+currentConjuntoData.id
-        else url =`https://socialneighborhood.herokuapp.com/social/autorizado/`+currentConjuntoData.id+`/`+currentUserData.id+`/`+currentViviendaData.id
+        url =`https://socialneighborhood.herokuapp.com/social/autorizadoAdmin/`+currentConjuntoData.idconjunto+`/`+currentConjuntoData.idusuarioadministrador+`/`+currentConjuntoData.id
+        else url =`https://socialneighborhood.herokuapp.com/client/autorizadoClient/`+currentViviendaData.idconjunto+`/`+currentUserData.id+`/`+currentViviendaData.idunidaddevivienda
         axios.post(url, body).then( function (response) {
             console.log(response.status);
             console.log(response.data);
@@ -70,7 +64,7 @@ const Login=()=>{
                 'success'
             )
             } else {
-            Swal.fire("Something is Wrong :(!", "try again later", "error");
+            Swal.fire("Dont send cache data :(!", "try again later", "error");
             //history.push("/login");
             }
         })
@@ -82,16 +76,13 @@ const Login=()=>{
     const handleUser = (e) =>{
         const { name, value } = e.target;
         //hacer solicitud al back del usuario actual
-        if (value){
+        if (/\S+@\S+\.\S+/.test(value)) {
             axios.get(`https://socialneighborhood.herokuapp.com/social/userByEmail/` + value
             ).then(res =>{
                     const dat = res.data
                     setCurrentUserData(dat)
-                    setCurrentUserData({...dat,
-                        profilePicture:"/people/user.png",
-                        nameConjunto:"pinar"
-                    })
                     console.log(currentUserData.email)
+                    console.log(currentUserData)
             }).catch(
                 e =>{console.log("Error: :c "+e)}
             )
@@ -104,7 +95,7 @@ const Login=()=>{
         localStorage.setItem('user', JSON.stringify(currentUserData));
         currentUserData.tipousuario=="Administrador"?
         localStorage.setItem('conjunto', JSON.stringify(currentConjuntoData)):
-        localStorage.setItem('Vivienda', JSON.stringify(currentViviendaData))
+        localStorage.setItem('vivienda', JSON.stringify(currentViviendaData))
         sendCache(currentUserData.tipousuario);
         console.log(currentUserData)
         if (currentUserData.tipousuario && currentUserData.nombres && currentUserData.password) {
@@ -112,8 +103,7 @@ const Login=()=>{
                 redirect='/adminDashboard/'
             } else {
               redirect='/residentDashboard/'
-            }                                                                                                                                                                                                                                                                                                                       
-            console.log(redirect)
+            }
             history.push(redirect);
         }
     };
@@ -134,28 +124,14 @@ const Login=()=>{
                         </div>
                         <br></br>
                         <div >
-                            <FormControl className="" variant="outlined">
+                            <FormControl className="" variant="outlined" fullWidth>
                                 <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
                                 <OutlinedInput fullWidth label="Password"
                                     id="outlined-adornment-password-login"
                                     type={showPassword? 'text' : 'password'}
                                     name="password"
                                     autoComplete="off"
-                                    onChange={handleChange}
-
-                                    endAdornment={
-                                        <InputAdornment position="end">
-                                            <IconButton
-                                                aria-label="toggle password visibility"
-                                                onClick={toggleShowPassword}
-                                                edge="end"
-                                                name = "showPassword"
-                                                id = "showPassword"
-                                            >
-                                                {showPassword? <Visibility /> : <VisibilityOff />}
-                                            </IconButton>
-                                        </InputAdornment>
-                                    }
+                                    // onChange={handleChange}
                                 />
                             </FormControl>
 
@@ -163,11 +139,11 @@ const Login=()=>{
                         <br></br>
                         <br></br>
                         {currentUserData?.tipousuario==="Administrador"?
-                            <DropForm param={'conjuntosByEmail/'+currentUserData?.email} location='social' enableSubmit={false} onChange={handleChange}/>
+                            <DropFormConjunto param={'conjuntosByEmail/'+currentUserData?.email} location='social' enableSubmit={false} onChange={handleChange}/>
                             :
                         <div>
                             {currentUserData?.tipousuario==='Residente' ?
-                            <DropDeepForm param={'unidadesDeViviendaByEmail/'+currentUserData?.email} location='social' enableSubmit={false} />
+                            <DropDeepForm param={'unidadesDeViviendaByEmail/'+currentUserData?.email} location='social' enableSubmit={false}  onChange={handleChange2}/>
                             :
                             <div></div>
                             }
