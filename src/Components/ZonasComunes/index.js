@@ -18,17 +18,66 @@ import FormLabel from '@mui/material/FormLabel';
 import axios from 'axios';
 import InputAdornment from '@mui/material/InputAdornment';
 
+import Swal from "sweetalert2";
 
-const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log(data);
-};
+
 const defaultState = {
         tipoAgrupacion: {},
         tipoInmueble: {}
     }
-const ZonasComunes = ({conjunto,user}) => {
+const ZonasComunes = ({conjunto,user,currentVivienda}) => {
+
+const [current,setCurrent] = useState({
+    idZonaComun:0
+});
+const handleOnChange = (value) => {
+    console.log(value)
+    setCurrent({
+        ...current,idZonaComun:value
+    });
+    console.log(current)
+  };
+const getStringDataLocation =()=>{
+    let str =''
+    user?.tipoUsuario == 'Residente' ? 
+    str = currentVivienda.idconjunto+`/`+user.id+`/`+currentVivienda.idunidaddevivienda
+    : str = conjunto.idconjunto+`/`+conjunto.idusuarioadministrador+`/`+conjunto.id
+    return str;
+}
+const handleSubmit = (event) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    let body={
+        idZonaComun:current.idZonaComun,
+        idConjunto: conjunto.idconjunto,
+        tiempoAlquilerCobro: data.get('tiempoAlquiler'),
+        costoAlquiler: data.get('costoAlquiler'),
+        Disponible: data.get('row-radio-buttons-group'),
+        tiempodeespera: data.get('tiempoEspera'),
+        tiempomaximoalquiler: data.get('tiempoMaximo')
+    }
+    console.log(data);
+    console.log(body);
+    let currentstr = getStringDataLocation();
+    axios.post(window.$dir+`admin`+`/`+ `newzonaComunConjunto`+`/`+ currentstr, body)
+    .then( function (response) {
+        console.log(response.status);
+        console.log(response.data);
+        if (response.status === 200) {
+        Swal.fire(
+            'Actualizado correctamente',
+            'success'
+            ).then((result) => {
+                if (result.isConfirmed) {
+                } });
+        } else {
+        Swal.fire("Something is Wrong :(!", "try again later", "error");
+        }                                                               
+    })
+    .catch(function (errorx) {
+        Swal.fire(""+errorx, "try again later", "error");
+    });
+};
     const [currentConjuntoData,SetCurrentConjuntoData] = useState({
         idConjunto:'',
         tipoAgrupacion: '',
@@ -134,7 +183,7 @@ const ZonasComunes = ({conjunto,user}) => {
                 <Grid item xs={4} > 
                     <DropForm param='zonaComun'
                         currentConjunto ={conjunto} currentUsuario={user} 
-                        location='admin' enableSubmit={false} />
+                        location='admin' enableSubmit={false} submited={handleOnChange}/>
                 </Grid>
                 <Grid item xs={4}> 
                     <TextField
@@ -193,10 +242,10 @@ const ZonasComunes = ({conjunto,user}) => {
                     />
                 </Grid>
             </Grid>
-            </Box>
             <br/>
             <Box textAlign='center'>
                 <Button type="submit" variant="contained" color="success"endIcon={<SendIcon />}>Confirmar</Button>
+            </Box>
             </Box>
         </Box>
     )

@@ -23,7 +23,7 @@ const DropForm = ({param,param2,param3,
                     currentConjunto,currentUsuario,currentVivienda,
                     level}) => {
     const [datas,setDatas] = useState([]);
-    const [currentItem,setCurrentItem] = useState('');
+    const [currentItem,setCurrentItem] = useState(0);
     const [datas2,setDatas2] = useState([]);
     const [loading,setIsloading] =useState(false);
     const [enablesubmit2,sertenablesubmit2] =useState(false);
@@ -51,8 +51,9 @@ const DropForm = ({param,param2,param3,
     useEffect(()=>{
         fetchData()
     },[fetchData])
-    const handleCurrentItem = (id) =>{
-        setCurrentItem(id)
+    const handleCurrentItem = (val) =>{
+        setCurrentItem(val);
+        submited(currentItem);
     }
     const handleSubmit = (event) => {
         Togglesubmit2(true)
