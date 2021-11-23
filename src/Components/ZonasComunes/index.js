@@ -75,7 +75,7 @@ const handleSubmit = (event) => {
         }                                                               
     })
     .catch(function (errorx) {
-        Swal.fire(""+errorx, "try again later", "error");
+        Swal.fire("Esta zona comun ya existe! :(!", "intenta con otra  zona de tu conjunto", "error");
     });
 };
     const [currentConjuntoData,SetCurrentConjuntoData] = useState({
@@ -183,7 +183,7 @@ const handleSubmit = (event) => {
                 <Grid item xs={4} > 
                     <DropForm param='zonaComun'
                         currentConjunto ={conjunto} currentUsuario={user} 
-                        location='admin' enableSubmit={false} submited={handleOnChange}/>
+                        location='admin' enableSubmit={false} submited={handleOnChange} isenable={true}/>
                 </Grid>
                 <Grid item xs={4}> 
                     <TextField

@@ -87,7 +87,7 @@ const handleOnChange = (name, value) => {
             }                                                               
         })
         .catch(function (errorx) {
-            Swal.fire(""+errorx, "try again later", "error");
+            Swal.fire("Esta vivienda ya existe! :(!", "intenta con otros datos", "error");
         });
     };
     return (

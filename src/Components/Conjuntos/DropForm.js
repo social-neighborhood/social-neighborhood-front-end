@@ -19,7 +19,7 @@ const defaultState = {
 
 const DropForm = ({param,param2,param3,
                     location,location2,
-                    onChange,enableSubmit,submited,
+                    onChange,enableSubmit,submited,isenable,
                     currentConjunto,currentUsuario,currentVivienda,
                     level}) => {
     const [datas,setDatas] = useState([]);
@@ -53,7 +53,7 @@ const DropForm = ({param,param2,param3,
     },[fetchData])
     const handleCurrentItem = (val) =>{
         setCurrentItem(val);
-        submited(currentItem);
+        if(isenable)submited(currentItem);
     }
     const handleSubmit = (event) => {
         Togglesubmit2(true)
@@ -61,32 +61,39 @@ const DropForm = ({param,param2,param3,
         console.log(event.currentTarget)
         const data = new FormData(event.currentTarget);
         // // enviar datos al back
-        // setIsloading(true)
-        // let body ={}
-        // let currentstr = getStringDataLocation();
-        // console.log(body)
-        // console.log(param2)
-        // console.log(data.get("prueba2"))
-        // axios.post(window.$dir+location+`/`+ param2+`/`+ currentstr, body)
-        // .then( function (response) {
-        //     console.log(response.status);
-        //     console.log(response.data);
-        //     if (response.status === 200) {
-        //     Swal.fire(
-        //         'Actualizado correctamente',
-        //         'success'
-        //         ).then((result) => {
-        //             if (result.isConfirmed) {
-        //                 setIsloading(false)
-        //                 submited()
-        //             } });
-        //     } else {
-        //     Swal.fire("Something is Wrong :(!", "try again later", "error");
-        //     }                                                               
-        // })
-        // .catch(function (errorx) {
-        //     Swal.fire(""+errorx, "try again later", "error");
-        // });
+        setIsloading(true)
+        let body ={}
+        if (param2 == "newTipoAgrupacion")
+            body={
+                idconjunto:currentConjunto.idconjunto,
+                idTipoAgrupacion:currentItem}
+        if (param2 == "newInmueble")
+            body={
+            idconjunto:currentConjunto.idconjunto,
+            idTipoInmueble: currentItem}
+        let currentstr = getStringDataLocation();
+        console.log(body)
+        axios.post(window.$dir+location+`/`+ param2+`/`+ currentstr, body)
+        .then( function (response) {
+            console.log(response.status);
+            console.log(response.data);
+            if (response.status === 200) {
+            Swal.fire(
+                'Actualizado correctamente',
+                'success'
+                ).then((result) => {
+                    if (result.isConfirmed) {
+                        setIsloading(false)
+                        submited()
+                    } });
+            } else {
+            Swal.fire("Something is Wrong :(!", "try again later", "error");
+            }                                                               
+        })
+        .catch(function (errorx) {
+            setIsloading(false)
+            Swal.fire("Este tipo ya existe en tu conjunto"+errorx, "Intenta con otro tipo", "error");
+        });
     };
     return (
         <div>

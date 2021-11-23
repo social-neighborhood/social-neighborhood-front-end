@@ -43,6 +43,7 @@ const DropFormConjunto2 = ({param,param2,param3,param4,
     }
     const ayuda=(res,currentstr)=>{
         axios.all(res?.map(function(result){
+            console.log(result)
             let str = result.idTipoAgrupacion?result.idTipoAgrupacion:result.idtipoagrupacionconjunto?result.idtipoagrupacionconjunto+`/`+currentstr:result.idTipoInmueble
             return axios.get(window.$dir+location2+`/`+ param3+`/`+ str)
             .then(function(response){
@@ -118,8 +119,8 @@ const handleOnChange = (name, value) => {
             }                                                               
         })
         .catch(function (errorx) {
-            Swal.fire(""+errorx, "try again later", "error");
-        });
+            setIsloading(false)
+            Swal.fire("Esta agrupacion ya existe! :(!", "intenta con otro numero o tipo", "error");        });
     };
     return (
         <div>
