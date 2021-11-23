@@ -10,8 +10,14 @@ import SendIcon from '@mui/icons-material/Send';
 import Paper from '@mui/material/Paper';
 import SaveTwoToneIcon from '@mui/icons-material/SaveTwoTone';
 import DropForm from '../Conjuntos/DropForm';
-
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
 import axios from 'axios';
+import InputAdornment from '@mui/material/InputAdornment';
+
 
 const handleSubmit = (event) => {
     event.preventDefault();
@@ -22,7 +28,7 @@ const defaultState = {
         tipoAgrupacion: {},
         tipoInmueble: {}
     }
-const ZonasComunes = () => {
+const ZonasComunes = ({conjunto,user}) => {
     const [currentConjuntoData,SetCurrentConjuntoData] = useState({
         idConjunto:'',
         tipoAgrupacion: '',
@@ -126,16 +132,18 @@ const ZonasComunes = () => {
             <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }} className="card">
             <Grid container spacing={2} justifyContent="center" alignItems="flex-start" >     
                 <Grid item xs={4} > 
-                    <DropForm param='zonacomun'
-                    location='admin' enableSubmit={false} />
+                    <DropForm param='zonaComun'
+                        currentConjunto ={conjunto} currentUsuario={user} 
+                        location='admin' enableSubmit={false} />
                 </Grid>
                 <Grid item xs={4}> 
                     <TextField
                         required
                         id="tiempoAlquiler"
                         name="tiempoAlquiler"
-                        label="tiempo"
+                        label="tiempo Alquiler/h"
                         variant="outlined"
+                        type="number"
                     />
                 </Grid>
                 <Grid item xs={4}> 
@@ -145,19 +153,46 @@ const ZonasComunes = () => {
                         name="costoAlquiler"
                         label="costo de Alquiler"
                         variant="outlined"
+                        type="number"
+                        InputProps={{
+                            startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                          }}      
                     />
                 </Grid>
             </Grid>
-                <TextField
-                        select required 
-                        id="disponible"
-                        name="disponible"
-                        label="Disponible"
+            <FormControl component="fieldset">
+                <FormLabel component="legend">Disponible</FormLabel>
+                <RadioGroup row aria-label="gender" name="row-radio-buttons-group">
+                    <FormControlLabel value="true" control={<Radio />} label="verdadero" />
+                    <FormControlLabel value="false" control={<Radio />} label="falso" />
+                </RadioGroup>
+            </FormControl>
+            <Grid container spacing={2} justifyContent="center" alignItems="flex-start" >     
+                <Grid item xs={6}> 
+                    <TextField
+                        required
+                        id="tiempoEspera"
+                        name="tiempoEspera"
+                        label="Espera/h"
                         variant="outlined"
-                    >
-                    <MenuItem id="true"name="true" value="true">  true   </MenuItem>  
-                    <MenuItem id="false"name="false" value="false">  false  </MenuItem>  
-                </TextField>
+                        helperText="tiempo a esperar entre eventos"
+                        size="small"
+                        type="number"
+                    />
+                </Grid>
+                <Grid item xs={6}> 
+                    <TextField
+                        required
+                        id="tiempoMaximo"
+                        name="tiempoMaximo"
+                        label="TiempoMaximo/h"
+                        variant="outlined"
+                        helperText="tiempo maximo de alquiler"
+                        size="small"
+                        type="number"
+                    />
+                </Grid>
+            </Grid>
             </Box>
             <br/>
             <Box textAlign='center'>

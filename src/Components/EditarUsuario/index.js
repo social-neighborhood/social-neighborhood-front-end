@@ -12,6 +12,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Grid from '@mui/material/Grid';
 import DropForm from '../Conjuntos/DropForm'
 import './register.css';
+import DropFormConjunto3 from '../Conjuntos/DropFormConjunto3';
+import DropFormConjunto2 from '../Conjuntos/DropFormConjunto2';
 const defaultState = {
     conjunto: "",
     unidad: ""
@@ -38,9 +40,11 @@ function Viviendas ({onRemove,onChange}){
                     </TextField> */}
                  <TextField
                     required
+                    disabled
                     id="tipoHabitante"
                     label="tipo de Habitante"
                     variant="outlined"
+                    value="propietario"
                     />   
                 </Grid>
             <Grid item xs={5} >    
@@ -68,7 +72,7 @@ function Viviendas ({onRemove,onChange}){
         </div>
     )
 }
-const EditarUsuario = () => {
+const EditarUsuario = ({user,conjunto}) => {
 
     const [currentConjuntoData,SetCurrentConjuntoData] = useState({});
     const toggleConjunto =(e)=>{
@@ -107,6 +111,7 @@ const EditarUsuario = () => {
            <Typography variant="h4" align="center" gutterBottom>Usuarios</Typography>
            <div>
             <DropForm param='Usuario'
+             currentConjunto ={conjunto} currentUsuario={user} 
                                 location='admin' enableSubmit={false} />
             </div>               
             <br/>

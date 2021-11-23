@@ -52,8 +52,8 @@ const Login=()=>{
         const body={}
         let url=''
         if(rol =="Administrador")
-        url =`https://socialneighborhood.herokuapp.com/social/autorizadoAdmin/`+currentConjuntoData.idconjunto+`/`+currentConjuntoData.idusuarioadministrador+`/`+currentConjuntoData.id
-        else url =`https://socialneighborhood.herokuapp.com/client/autorizadoClient/`+currentViviendaData.idconjunto+`/`+currentUserData.id+`/`+currentViviendaData.idunidaddevivienda
+        url = window.$dir+`admin/autorizadoAdmin/`+currentConjuntoData.idconjunto+`/`+currentConjuntoData.idusuarioadministrador+`/`+currentConjuntoData.id
+        else url =window.$dir+`client/autorizadoClient/`+currentViviendaData.idconjunto+`/`+currentUserData.id+`/`+currentViviendaData.idunidaddevivienda
         axios.post(url, body).then( function (response) {
             console.log(response.status);
             console.log(response.data);
@@ -77,7 +77,7 @@ const Login=()=>{
         const { name, value } = e.target;
         //hacer solicitud al back del usuario actual
         if (/\S+@\S+\.\S+/.test(value)) {
-            axios.get(`https://socialneighborhood.herokuapp.com/social/userByEmail/` + value
+            axios.get(window.$dir+`social/userByEmail/` + value
             ).then(res =>{
                     const dat = res.data
                     setCurrentUserData(dat)

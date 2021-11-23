@@ -29,15 +29,15 @@ const AdminDashboard = () => {
             case 'crearUsuario':
               return <RegisterUser/>;
             case 'Conjuntos':
-                return <Conjuntos/>;
+                return <Conjuntos user={currentUser} conjunto={currentConjunto}/>;
             case 'Feed':
                     return <Feed/>;
             case 'ConfigurarConjuntos':
-                return <ConfigurarConjuntos/>;
+                return <ConfigurarConjuntos user={currentUser} conjunto={currentConjunto}/>;
             case 'EditarUsuario':
-                return <EditarUsuario/>;
+                return <EditarUsuario  user={currentUser} conjunto={currentConjunto}/>;
             case 'ZonasComunes':
-                return <ZonasComunes/>;
+                return <ZonasComunes  user={currentUser} conjunto={currentConjunto}/>;
             default:
               return <Feed/>;
           }
@@ -57,6 +57,7 @@ const AdminDashboard = () => {
         }
         //const res = await axios.get(`/users?username=${username}`);
         console.log("current-------User")
+        console.log(currentConjunto)
         console.log(currentUser)
         console.log("currentassssssssssssdasdUser")
         console.log(currentVivienda)
