@@ -14,6 +14,7 @@ import axios from 'axios';
 import Swal from "sweetalert2";
 import zonasComunes from '../../Components/ZonasComunes';
 import ZonasComunes from '../../Components/ZonasComunes';
+import Alquiler from '../../Components/Alquiler';
 const AdminDashboard = () => {
     const [user, setUser] = useState({});
     const [section, setSection] = useState('Feed');

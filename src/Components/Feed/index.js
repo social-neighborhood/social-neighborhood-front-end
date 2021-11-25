@@ -18,9 +18,21 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import ImageIcon from '@mui/icons-material/Image';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import Alquiler from "../Alquiler";
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import MapsHomeWorkIcon from '@mui/icons-material/MapsHomeWork';
 
+import {useDate} from '../../useDate'
 
-const Feed = () => {
+const Feed = ({user,conjunto}) => {
+    const [value, setValue] = useState(0);
+
+    const handleChange = (event, newValue) => {
+      setValue(newValue);
+    };
+    const { date, time, wish } = useDate();
+
     return (
     <div className="feed">
         <div className="feedWrapper">
@@ -28,11 +40,12 @@ const Feed = () => {
             <CardHeader
                 avatar={
                 <Avatar sx={{ bgcolor: red[123] }} aria-label="recipe">
-                    N
+                    {user.nombres[0]+ ' '+ user.apellidos[0]}
                 </Avatar>
                 }
-                title="NameCurrentUser"
+                title={user.nombres+ ' '+ user.apellidos}
             />
+            {date}{time}
             <CardContent>
             <TextField
                         required fullWidth
