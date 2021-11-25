@@ -40,10 +40,10 @@ const Feed = ({user,conjunto}) => {
             <CardHeader
                 avatar={
                 <Avatar sx={{ bgcolor: red[123] }} aria-label="recipe">
-                    {user.nombres[0]+ ' '+ user.apellidos[0]}
+                    {user?.nombres[0]+ ' '+ user?.apellidos[0]}
                 </Avatar>
                 }
-                title={user.nombres+ ' '+ user.apellidos}
+                title={user?.nombres+ ' '+ user?.apellidos}
             />
             {date}{time}
             <CardContent>

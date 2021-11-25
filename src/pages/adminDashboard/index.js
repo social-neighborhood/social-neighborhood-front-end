@@ -32,7 +32,7 @@ const AdminDashboard = () => {
             case 'Conjuntos':
                 return <Conjuntos user={currentUser} conjunto={currentConjunto}/>;
             case 'Feed':
-                    return <Feed/>;
+                    return <Feed user={currentUser} conjunto={currentConjunto}/>;
             case 'ConfigurarConjuntos':
                 return <ConfigurarConjuntos user={currentUser} conjunto={currentConjunto}/>;
             case 'EditarUsuario':
@@ -40,7 +40,7 @@ const AdminDashboard = () => {
             case 'ZonasComunes':
                 return <ZonasComunes  user={currentUser} conjunto={currentConjunto}/>;
             default:
-              return <Feed/>;
+              return <Feed user={currentUser} conjunto={currentConjunto}/>;
           }
      }
     useEffect(() => {
