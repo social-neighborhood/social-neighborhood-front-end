@@ -3,33 +3,25 @@ import Post from "../Post";
 import "./feed.css";
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
-import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
-import Collapse from '@mui/material/Collapse';
 import Avatar from '@mui/material/Avatar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
 import { red } from '@mui/material/colors';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import ShareIcon from '@mui/icons-material/Share';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import ImageIcon from '@mui/icons-material/Image';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import Alquiler from "../Alquiler";
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import MapsHomeWorkIcon from '@mui/icons-material/MapsHomeWork';
 import Box from '@mui/material/Box';
 import {db,storage} from './../../firebase/firebaseConfig';
 import {useForm} from 'react-hook-form';
 import {useDate} from '../../useDate'
+import Swal from "sweetalert2";
+import CircularProgress from '@mui/material/CircularProgress';
+import LoadingButton from '@mui/lab/LoadingButton';
 
 const Feed = ({user,conjunto}) => {
     const {register, handleSubmit}  = useForm();
     const [rtData, setRTData] =  useState([])
+    const [loading, isLoading] =  useState(false)
 
     async function  loadDataRT(){
         const suscriber = await db.collection('Post').orderBy("fechaPublicacion", "desc").onSnapshot(querySnapshot =>{
@@ -70,14 +62,19 @@ const Feed = ({user,conjunto}) => {
             imagen: fileUrl,
             nombreUsuario: user.nombres,
             texto: e.target.inputPost.value
-        })
+        }).catch(function (errorx) {
+            Swal.fire("Error de servidor :(!", "Intenta de nuevo", "error");
+        });
+        setFileUrl(null)
       }
     const onFileChange = async(e) =>{
+        isLoading(true);
         const file  = e.target.files[0]
         const storageRef = storage.ref()
         const fileRef  = storageRef.child(file.name)
         await fileRef.put(file)
         setFileUrl(await  fileRef.getDownloadURL())
+        isLoading(false);
     }
     return (
     <div className="feed">
@@ -107,7 +104,11 @@ const Feed = ({user,conjunto}) => {
                         Upload image
                         <input onChange={onFileChange} type="file" name="file" hidden/>
                 </Button>
-                <Button type="submit" variant="contained" color="info" sx={{ ml: 50}}>Publish</Button>
+                {
+                    (!loading)?
+                    <Button type="submit" variant="contained" color="info" sx={{ ml: 50}}>Publish</Button>
+                    : <LoadingButton loading  variant="outlined"></LoadingButton>
+                }
              </CardActions>
              </Box>
         </Card>
