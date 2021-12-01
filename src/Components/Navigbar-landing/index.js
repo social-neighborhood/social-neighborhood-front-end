@@ -43,26 +43,7 @@ const Navbar = ({toggle}) => {
                         <FaBars/>
                     </MobileIcon>
                     <NavMenu>
-                        <NavItems>
-                            <NavLinks 
-                                to="about"
-                                smooth={true}
-                                duration={500}
-                                spy={true}
-                                exact ='true' 
-                                offset={20}
-                            >Quienes Somos?</NavLinks>
-                        </NavItems>
-                        <NavItems>
-                            <NavLinks 
-                                to="ls"
-                                smooth={true}
-                                duration={500}
-                                spy={true}
-                                exact ='true' 
-                                offset={20}
-                                >Contáctanos</NavLinks>
-                        </NavItems>
+
                         <NavBtnWrapper>
                             <Button  to='/Login'>Iniciar sesion </Button>
                         </NavBtnWrapper>

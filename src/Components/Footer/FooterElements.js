@@ -39,11 +39,39 @@ export const SocialLogo = styled(Link)`
     font-size: 1.5 rem;
     display:flex;
     align-items: center;
-    margin-bottom: 16px;
+    margin-bottom: 10px;
     font-weight: bold;
 `;
 
 export const  WebSiteRight = styled.small`
     color: #fff;
-    margin-bottom:  16px;
+    margin-bottom:  10px;
 `;
+
+export const NavItems =styled.li`
+    height: 80px;
+`;
+
+export const  NavLinks =styled(Link)`
+    color: #fff;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    padding: 0 1rem;
+    margin-bottom: 10px;
+    cursor: pointer;
+    &:active{
+        border-bottom: 3px solid Teal;
+    }
+    font-weight:bold;
+`;
+
+export const NavbarContainer =styled.div`
+    display: flex;
+    justify-content: space-between;
+    height: 80px;
+    z-index:1;
+    width:100%;
+    padding:   0 24px;
+    max-width: 1200px;
+    `;

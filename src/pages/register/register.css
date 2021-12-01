@@ -1,8 +1,12 @@
 .register_box{
     margin: 120px;
-    max-width: 600px;
+    max-width: 500px;
+    max-height: 700px;
     align-content:center;
 }
 .some{
     width:500px;
+}
+.fondo{
+    background: rgb(227, 228, 229);
 }

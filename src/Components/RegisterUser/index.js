@@ -115,7 +115,7 @@ const RegisterUser = () => {
             </Stack>
             <br/>
             <Box textAlign='center'>
-                <Button type="submit" variant="contained" color="success"endIcon={<SendIcon />}>Confirmar</Button>
+                <Button class="botonregister" type='submit' variant="contained" endIcon={<SendIcon />}>Confirmar</Button>
             </Box>
         </Box>
         </div>

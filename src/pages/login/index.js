@@ -18,6 +18,7 @@ import DropDeepForm from '../../Components/Conjuntos/DropDeepForm';
 import DropFormConjunto from '../../Components/Conjuntos/DropFormConjunto';
 import axios from 'axios';
 import {Users} from '../../testData';
+import './login.css';
 const Login=()=>{
 
     const paperStyle={padding :20,height:'70vh',width:310, margin:"20px auto"}
@@ -111,7 +112,7 @@ const Login=()=>{
     return(
         <Grid>
             <form onSubmit={handleSubmit} className="" >
-                <Paper elevation={10} style={paperStyle}>
+                <Paper elevation={10} style={paperStyle} class="fondologin">
                     <Grid align='center'>
                         <Avatar style={avatarStyle}><LockOutlinedIcon/></Avatar>
                         <h2>Iniciar Sesion</h2>
@@ -151,7 +152,7 @@ const Login=()=>{
                         }
                         <br></br>
                     </div>
-                    <Button type='submit' color='primary' variant="contained" style={btnstyle} fullWidth>Sign in</Button>
+                    <Button class="botonlogin" type='submit' color='primary' variant="contained" style={btnstyle} fullWidth>Sign in</Button>
                 </Paper>
             </form>
         </Grid>

@@ -3,16 +3,7 @@ import { Link as LinkR } from 'react-router-dom';
 import { Link as LinkS } from 'react-scroll';
 
 export const Nav =styled.nav`
-    background: linear-gradient(
-        180deg, 
-        rgba(0,0,0,0.2) 0%,
-        rgba(0,0,0,0.6)  100%
-    ),
-    linear-gradient(
-        180deg,
-        rgba(0,0,0,0.2) 0%,
-        transparent 100%
-    );
+    background-color: #101533;
     height: 60px;
     margin-top: -80px;
     display: flex;

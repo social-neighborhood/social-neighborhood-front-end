@@ -105,15 +105,15 @@ export default function Leftbar({user,changeSection,conjunto,vivienda}) {
             sx={{ width: 156, height: 156 }}
           />
           <div className="profileInfo">
-              <h4 className="profileInfoName">{user.nombres+" "+user.apellidos}</h4>
-              <p className="profileInfoDesc">{user.email}</p>
-              <p className="profileInfoDesc">{user.tipousuario}</p>
+              <h4 className="letras">{user.nombres+" "+user.apellidos}</h4>
+              <p className="letras">{user.email}</p>
+              <p className="letras">{user.tipousuario}</p>
               {/* <p className="profileInfoDesc">Conjunto: {conjunto.nombre}</p> */}
               {
                 user.tipousuario =="Administrador"?
-                <p className="profileInfoDesc">Conjunto :{nConjunto}</p>
+                <p className="letras">Conjunto :{nConjunto}</p>
                 :
-                <p className="profileInfoDesc">Vivienda: {(vivienda.tipoagrupacion!='null'? vivienda.tipoagrupacion:'')+" "+(vivienda.numagrupacion!='null'?vivienda.numagrupacion:'')+" "+
+                <p className="letras">Vivienda: {(vivienda.tipoagrupacion!='null'? vivienda.tipoagrupacion:'')+" "+(vivienda.numagrupacion!='null'?vivienda.numagrupacion:'')+" "+
                 vivienda.tipoinmueble+" "+vivienda.numinmueble}</p>
               }
           </div>
@@ -155,9 +155,9 @@ export default function Leftbar({user,changeSection,conjunto,vivienda}) {
               :
               <div></div>
             }
-            <ListItemButton name="Feed" className="Feed" onClick={changeSection('Feed') }>
-              <ListItemIcon><EmojiEmotionsIcon className="sidebarIcon"/> </ListItemIcon>
-              <ListItemText>Feed</ListItemText>
+            <ListItemButton  name="Feed" className="Feed" onClick={changeSection('Feed') }>
+              <ListItemIcon><EmojiEmotionsIcon className="sidebarIcon letras"/> </ListItemIcon>
+              <ListItemText className="letras">Feed</ListItemText>
             </ListItemButton>
           </List>          
         </ul>
