@@ -13,11 +13,10 @@ import DropForm from './DropForm';
 import axios from 'axios';
 import Swal from "sweetalert2";
 
-const Conjuntos = () => {
+const Conjuntos = ({user, conjunto}) => {
     const [isAgrupacion,setIsAgrupacion] = useState(false);
     const [isInmueble,setIsInmueble] = useState(false);
     const [isEnableButton,setEnableButton] = useState(true);
-    const [currentConjunto,setCurrentConjunto] = useState({});
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
@@ -27,10 +26,6 @@ const Conjuntos = () => {
             tipoInmueble: data.get('tipoInmueble'),
         });
     };
-    const handleButtons = (e) => {
-        console.log(e.target.id)
-        setCurrentConjunto(e.target.id)
-      };
     const toggleAgrupacion =()=>{
         setIsAgrupacion(true);
         setIsInmueble(false);
@@ -41,6 +36,10 @@ const Conjuntos = () => {
         }
     const handleNext =()=>{
         toggleInmueble();
+        }
+    const handleDisabled =()=>{
+        setIsAgrupacion(false);
+        setIsInmueble(false);
         }
     return (
         <Box sx={{  flexGrow: 1 }} className="card">
@@ -61,18 +60,19 @@ const Conjuntos = () => {
                         <Box textAlign='center'>
                             <Button onClick={toggleInmueble} size="small" variant="contained" color="info">Crear Tipo Inmueble</Button>
                         </Box>
-                       </Stack>:
+                       </Stack>
                        <div></div>
                    <br/>
                    <br/>
                     {
                         isAgrupacion? 
                         <DropForm param='TipoAgrupacionesGeneral' param2="newTipoAgrupacion"
-                                 location='admin' submited={handleNext}  enableSubmit={true} />
+                                 location='admin' submited={handleNext}  
+                                 enableSubmit={true} currentConjunto ={conjunto} currentUsuario={user} />
                         :
                         isInmueble?
                         <DropForm param='TipoInmueblesGeneral' param2="newInmueble" 
-                                location='admin' onChange={handleButtons}  enableSubmit={true}  />   
+                                location='admin'enableSubmit={true} submited={handleDisabled} currentConjunto ={conjunto} currentUsuario={user} />   
                         :
                         <div></div>
                     }

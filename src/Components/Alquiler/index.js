@@ -17,16 +17,22 @@ import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import axios from 'axios';
 import InputAdornment from '@mui/material/InputAdornment';
-
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
 import Swal from "sweetalert2";
-
+import DialogTitle from '@mui/material/DialogTitle';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import DialogActions from '@mui/material/DialogActions';
 
 const defaultState = {
         tipoAgrupacion: {},
         tipoInmueble: {}
     }
-const ZonasComunes = ({conjunto,user,currentVivienda}) => {
-
+const Alquiler = ({conjunto,user,vivienda,isEnabled,handleClose}) => {
+    const theme = useTheme();
+    const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 const [current,setCurrent] = useState({
     idZonaComun:0
 });
@@ -40,7 +46,7 @@ const handleOnChange = (value) => {
 const getStringDataLocation =()=>{
     let str =''
     user?.tipoUsuario == 'Residente' ? 
-    str = currentVivienda.idconjunto+`/`+user.id+`/`+currentVivienda.idunidaddevivienda
+    str = vivienda.idconjunto+`/`+user.id+`/`+vivienda.idunidaddevivienda
     : str = conjunto.idconjunto+`/`+conjunto.idusuarioadministrador+`/`+conjunto.id
     return str;
 }
@@ -116,24 +122,7 @@ const handleSubmit = (event) => {
         });
         console.log(currentConjuntoData)
     };
-    const handleButtons =(e)=>{
-        handleChange(e.target.id);
-        setEnableButtons(true);
-        axios.get(`https://socialneighborhood.herokuapp.com/admin/`+currentConjuntoData.idConjunto+`/tipoAgrupacion`
-            ).then(res =>{     
-                handleChange(res.data);
-                toggleAgrupacion();
-            }).catch(
-                e =>{console.log("No se encuentra tipo agrupacion: "+e)}
-            )
-        axios.get(`https://socialneighborhood.herokuapp.com/admin/`+currentConjuntoData.idConjunto+`/tipoInmueble`
-        ).then(res =>{   
-            handleChange(res.data);
-            toggleUnidad();
-        }).catch(
-            e =>{console.log("No se encuentra tipo inmueble: "+e)}
-        )
-    }
+
         const [nValues,setNvalues]= useState({
             nVivienda:'',
             nAgrupacion:''
@@ -145,59 +134,42 @@ const handleSubmit = (event) => {
                 });
             };
     return (
-        <Box sx={{  flexGrow: 1 }} className="card">
-        <Typography variant="h4" align="center" component="h1" gutterBottom>Zonas Comunes</Typography>
-            <Typography align="center" component="p" gutterBottom>
-                Siempre divertirse y compartir va ser muy importante para  crear una comunidad mas unida es por eso
-                que aqui podrás añadir las zonas comunes con que cuenta tu conjunto con el fin de que estas puedan ser alquiladas
-                y usadas por otros usuarios 
-                </Typography>
+        <Dialog open={isEnabled} onClose={handleClose} fullScreen={fullScreen}>
+        <DialogTitle id="responsive-dialog-title"> {"Alquilar"} </DialogTitle>   
+        <DialogContent> 
+            <DialogContentText>
+                Que deseas alquilar? recuerda compartir este evento con tus amigos del conjunto!
+            </DialogContentText>
+            <Box sx={{  flexGrow: 1 }} >
             <Grid container justifyContent="center" alignItems="flex-start" className="formConjuntos"> 
-                <Grid item xs={4}>
+                <Grid item xs={6}>
                     <Paper >  
                             <img
-                                src="/sport1.png" 
+                                src="/pool.png" 
                                 heigh="270px" width="270px"
                             />
                     </Paper>
                 </Grid>
-                <Grid item xs={4}>
-                    <Paper >  
-                            <img
-                                src="/sport2.png" 
-                                heigh="270px" width="270px"
-                            />
-                    </Paper>
-                </Grid>
-                <Grid item xs={4}>
-                    <Paper >  
-                            <img
-                                src="/sport3.png" 
-                                heigh="270px" width="270px"
-                            />
-                    </Paper>
-                </Grid>
-            </Grid>
-            <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }} className="card">
-            <Grid container spacing={2} justifyContent="center" alignItems="flex-start" >     
-                <Grid item xs={4} > 
+                <Grid item xs={6} > 
                     <DropForm param='zonaComun'
                         currentConjunto ={conjunto} currentUsuario={user} 
                         location='admin' enableSubmit={false} submited={handleOnChange} isenable={true}/>
-                </Grid>
-                <Grid item xs={4}> 
                     <TextField
                         required
-                        id="tiempoAlquiler"
-                        name="tiempoAlquiler"
-                        label="tiempo Alquiler/h"
+                        id="inicioAlquiler"
+                        name="inicioAlquiler"
                         variant="outlined"
-                        type="number"
+                        type="datetime-local"
                     />
-                </Grid>
-                <Grid item xs={4}> 
-                    <TextField
+                     <TextField
                         required
+                        id="finAlquiler"
+                        name="finAlquiler"
+                        variant="outlined"
+                        type="datetime-local"
+                    />
+                    <TextField
+                        disabled
                         id="costoAlquiler"
                         name="costoAlquiler"
                         label="costo de Alquiler"
@@ -205,49 +177,23 @@ const handleSubmit = (event) => {
                         type="number"
                         InputProps={{
                             startAdornment: <InputAdornment position="start">$</InputAdornment>,
-                          }}      
-                    />
-                </Grid>
-            </Grid>
-            <FormControl component="fieldset">
-                <FormLabel component="legend">Disponible</FormLabel>
-                <RadioGroup row aria-label="gender" name="row-radio-buttons-group">
-                    <FormControlLabel value="true" control={<Radio />} label="verdadero" />
-                    <FormControlLabel value="false" control={<Radio />} label="falso" />
-                </RadioGroup>
-            </FormControl>
-            <Grid container spacing={2} justifyContent="center" alignItems="flex-start" >     
-                <Grid item xs={6}> 
-                    <TextField
-                        required
-                        id="tiempoEspera"
-                        name="tiempoEspera"
-                        label="Espera/h"
-                        variant="outlined"
-                        helperText="tiempo a esperar entre eventos"
-                        size="small"
-                        type="number"
-                    />
-                </Grid>
-                <Grid item xs={6}> 
-                    <TextField
-                        required
-                        id="tiempoMaximo"
-                        name="tiempoMaximo"
-                        label="TiempoMaximo/h"
-                        variant="outlined"
-                        helperText="tiempo maximo de alquiler"
-                        size="small"
-                        type="number"
+                          }}    
+                        value = "145000"  
                     />
                 </Grid>
             </Grid>
             <br/>
-            <Box textAlign='center'>
-                <Button type="submit" variant="contained" color="success"endIcon={<SendIcon />}>Confirmar</Button>
+            <DialogActions>
+                <Button autoFocus onClick={handleClose}>
+                    Aceptar 
+                </Button>
+                <Button onClick={handleClose} autoFocus>
+                    Cancelar
+                </Button>
+            </DialogActions>
             </Box>
-            </Box>
-        </Box>
+        </DialogContent> 
+        </Dialog>
     )
     }    
-export default ZonasComunes
+export default Alquiler

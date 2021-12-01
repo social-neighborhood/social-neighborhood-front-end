@@ -43,7 +43,7 @@ const DropFormConjunto = ({param,location,onChange,enableSubmit,param2,currentCo
         body={
             idconjunto:currentConjunto,
             tipoInmuebleConjunto:data.id}
-        axios.post(`http://localhost:8080/admin/`+param2, body)
+        axios.post(window.$dir+`admin/`+param2, body)
         .then( function (response) {
             console.log(response.status);
             console.log(response.data);

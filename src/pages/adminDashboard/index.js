@@ -14,6 +14,7 @@ import axios from 'axios';
 import Swal from "sweetalert2";
 import zonasComunes from '../../Components/ZonasComunes';
 import ZonasComunes from '../../Components/ZonasComunes';
+import Alquiler from '../../Components/Alquiler';
 const AdminDashboard = () => {
     const [user, setUser] = useState({});
     const [section, setSection] = useState('Feed');
@@ -29,17 +30,17 @@ const AdminDashboard = () => {
             case 'crearUsuario':
               return <RegisterUser/>;
             case 'Conjuntos':
-                return <Conjuntos/>;
+                return <Conjuntos user={currentUser} conjunto={currentConjunto}/>;
             case 'Feed':
-                    return <Feed/>;
+                    return <Feed user={currentUser} conjunto={currentConjunto}/>;
             case 'ConfigurarConjuntos':
-                return <ConfigurarConjuntos/>;
+                return <ConfigurarConjuntos user={currentUser} conjunto={currentConjunto}/>;
             case 'EditarUsuario':
-                return <EditarUsuario/>;
+                return <EditarUsuario  user={currentUser} conjunto={currentConjunto}/>;
             case 'ZonasComunes':
-                return <ZonasComunes/>;
+                return <ZonasComunes  user={currentUser} conjunto={currentConjunto}/>;
             default:
-              return <Feed/>;
+              return <Feed user={currentUser} conjunto={currentConjunto}/>;
           }
      }
     useEffect(() => {
@@ -57,6 +58,7 @@ const AdminDashboard = () => {
         }
         //const res = await axios.get(`/users?username=${username}`);
         console.log("current-------User")
+        console.log(currentConjunto)
         console.log(currentUser)
         console.log("currentassssssssssssdasdUser")
         console.log(currentVivienda)

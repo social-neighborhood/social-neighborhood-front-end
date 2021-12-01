@@ -11,6 +11,7 @@ import Conjuntos from './Components/Conjuntos';
 import ConfigurarConjuntos from './Components/ConfigurarConjuntos';
 import EditarUsuario from './Components/EditarUsuario';
 import ZonasComunes from './Components/ZonasComunes';
+import Alquiler from './Components/Alquiler';
 
 function App() {
   return (
@@ -45,6 +46,9 @@ function App() {
         </Route>
         <Route exact path='/ZonasComunes'>
           <ZonasComunes/>
+        </Route>
+        <Route exact path='/Alquiler'>
+          <Alquiler/>
         </Route>
         <Route exact path='*'>
           <Home/>

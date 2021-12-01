@@ -153,7 +153,10 @@ export default function Leftbar({user,changeSection,conjunto,vivienda}) {
                 
               </div>
               :
-              <div></div>
+              <div><ListItemButton name="Alquilar" className="Alquilar" onClick={changeSection('Alquiler') }sx={{ pl: 4 }}>
+              <ListItemIcon><BeachAccessTwoToneIcon className="sidebarIcon"/> </ListItemIcon>
+              <ListItemText>Alquilar</ListItemText>
+            </ListItemButton></div>
             }
             <ListItemButton  name="Feed" className="Feed" onClick={changeSection('Feed') }>
               <ListItemIcon><EmojiEmotionsIcon className="sidebarIcon letras"/> </ListItemIcon>

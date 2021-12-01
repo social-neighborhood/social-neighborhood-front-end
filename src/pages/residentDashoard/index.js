@@ -6,16 +6,38 @@ import React,{useState,useEffect} from 'react'
 import { Users } from "../../testData";
 import Swal from "sweetalert2";
 import './resident.css';
+import Alquiler from '../../Components/Alquiler';
+import { Panorama } from '@material-ui/icons';
 
 const ResidentDashboard = () => {
     const [currentUser,setCurrentUser] = useState(JSON.parse(localStorage.getItem('user')));
+    const [currentConjunto,setCurrentConjunto] = useState(JSON.parse(localStorage.getItem('conjunto')));
     const [currentVivienda,setCurrentVivienda] = useState(JSON.parse(localStorage.getItem('vivienda')));
     
     const [section, setSection] = useState('Feed');
     const changeSection = some => () =>{
         console.log(section)
+        if(some ==='Alquiler')handleClickOpen()
         setSection(some)
      }
+
+     const [open, setOpen] = useState(false);
+
+     const handleClickOpen = () => {
+       setOpen(true);
+     };
+   
+     const handleClose = () => {
+       setOpen(false);
+     };
+     const switchSection = (param) =>{
+        switch(param) {
+            case 'Feed':
+                return <Feed user={currentUser} conjunto={currentConjunto}/>;
+        default:
+            return <Feed user={currentUser} conjunto={currentConjunto}/>;
+        }
+    }
      useEffect(() => {
         const fetchUser = async () => {
         if (!currentUser) {
@@ -33,6 +55,7 @@ const ResidentDashboard = () => {
         console.log("current-------User")
         console.log(currentUser)
         console.log(currentVivienda)
+        console.log(currentConjunto)
 
         }
         fetchUser();
@@ -41,7 +64,9 @@ const ResidentDashboard = () => {
     return (
         <div className="residentContainer">
             <Leftbar user={currentUser} vivienda={currentVivienda} changeSection={changeSection}/>
-            <Feed/>
+            <Alquiler  user={currentUser} vivienda={currentVivienda} conjunto={currentConjunto} isEnabled={open} handleClose={handleClose}/>
+            {switchSection(section)
+            }
             <Rightbar/>
         </div>
     )

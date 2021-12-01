@@ -11,7 +11,7 @@
   * [Juan Camilo Posso Guevara](https://github.com/JCPosso)
   * [Richard Santiago Urrea Garcia](https://github.com/RichardUG)
 
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/b3afb518cae94a25bdf1105a254e63a9)](https://www.codacy.com/gh/social-neighborhood/social-neighborhood-front-end/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=social-neighborhood/social-neighborhood-front-end&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/fb2f181d840442eda823bfc21db2d035)](https://www.codacy.com/gh/social-neighborhood/social-neighborhood-front-end/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=social-neighborhood/social-neighborhood-front-end&amp;utm_campaign=Badge_Grade)
 
 
 # Licencia & Derechos de Autor

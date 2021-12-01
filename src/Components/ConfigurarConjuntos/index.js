@@ -1,23 +1,20 @@
 import React,{useState} from 'react'
 
-import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Grid';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import SendIcon from '@mui/icons-material/Send';
 import Paper from '@mui/material/Paper';
-import DinamicForm from './DinamicForm';
-import {Conjuntos} from '../../testData';
 import DropForm from '../Conjuntos/DropForm';
 import SaveTwoToneIcon from '@mui/icons-material/SaveTwoTone';
 
 
 import axios from 'axios';
-import Swal from "sweetalert2";
+import DropFormConjunto from '../Conjuntos/DropFormConjunto';
+import DropFormConjunto2 from '../Conjuntos/DropFormConjunto2';
+import DropFormConjunto3 from '../Conjuntos/DropFormConjunto3';
 
 const handleSubmit = (event) => {
     event.preventDefault();
@@ -28,7 +25,14 @@ const defaultState = {
         tipoAgrupacion: {},
         tipoInmueble: {}
     }
-const ConfigurarConjuntos = () => {
+
+const ConfigurarConjuntos = ({user,conjunto}) => {
+    const [currentInmueble,setCurrentInmueble] = useState('');
+    const toggleCurrentInmueble = (value)=> {
+        setCurrentInmueble(value);
+        console.log("ajksdhkashd")
+        value.preventDefault();
+   }
     const [currentConjuntoData,SetCurrentConjuntoData] = useState({
         idConjunto:'',
         tipoAgrupacion: '',
@@ -55,9 +59,26 @@ const ConfigurarConjuntos = () => {
             setIsUnidad(false);
          }
         }
-    const toggleUnidad =()=>{
+    const toggleUnidad =(event)=>{
+        console.log(event)
         setIsAgrupacion(false);
         setIsUnidad(true);
+        }
+    const toggleUnidads =()=>{}
+    const submited3 =()=>{
+        setIsAgrupacion(false);
+        setIsUnidad(true);
+        }
+    const handleSubmit =(event)=>{
+        console.log(currentInmueble)
+        event.preventDefault();
+        const data = new FormData(event.currentTarget);
+        // enviar datos al back
+        console.log(event.currentTarget);
+        console.log({
+            tipoAgrupacion: data.get('TipoAgrupacionesPropia'),
+            tipoInmueble: data.get('nAgrupacion')
+        });
         }
     const handleChange = data => {
         const { name, value } = data;
@@ -70,14 +91,14 @@ const ConfigurarConjuntos = () => {
     const handleButtons =(e)=>{
         handleChange(e.target.id);
         setEnableButtons(true);
-        axios.get(`https://socialneighborhood.herokuapp.com/admin/`+currentConjuntoData.idConjunto+`/tipoAgrupacion`
+        axios.get(window.$dir+`admin/`+currentConjuntoData.idConjunto+`/tipoAgrupacion`
             ).then(res =>{     
                 handleChange(res.data);
                 toggleAgrupacion();
             }).catch(
                 e =>{console.log("No se encuentra tipo agrupacion: "+e)}
             )
-        axios.get(`https://socialneighborhood.herokuapp.com/admin/`+currentConjuntoData.idConjunto+`/tipoInmueble`
+        axios.get(window.$dir+`admin/`+currentConjuntoData.idConjunto+`/tipoInmueble`
         ).then(res =>{   
             handleChange(res.data);
             toggleUnidad();
@@ -134,66 +155,23 @@ const ConfigurarConjuntos = () => {
                             //por ello se va crear un nuevo tipo de form llamado dropMetaForm.js
                             <div>
                             <br/>
-                            <Grid container spacing={2} justifyContent="center" alignItems="flex-start" >                               
-                                <Grid item xs={8} > 
-                                    <DropForm param='TipoAgrupacionesPropia'
-                                    location='admin' enableSubmit={false} />
-                                </Grid>
-                                <Grid item xs={4}> 
-                                    <TextField
-                                        required
-                                        id="nAgrupacion"
-                                        name="nAgrupacion"
-                                        label="#"
-                                        variant="outlined"
-                                        value={nValues.nAgrupacion}
-                                        onChange={e=> onChange("nAgrupacion",e.target.value)}
+                            <DropFormConjunto2 param='TipoAgrupacionesPropia' 
+                                    location='admin' enableSubmit={false} 
+                                    currentConjunto ={conjunto} currentUsuario={user} 
+                                    location2='social' param3='tipoAgrupacionById' level={1} 
+                                    enableSubmit = {true} param2='newAgrupacion'submited={toggleUnidads}
                                     />
-                                </Grid>
-                            </Grid>
-                            <br/>
-                            <Box textAlign='center'>
-                                <Button type="submit" variant="contained" color="success"endIcon={<SaveTwoToneIcon/>}>Confirmar</Button>
-                            </Box>
                             </div>
                         :
                         isUnidad?
-                            <div>
-                            <br/>
-                            <DropForm param='agrupacion'
-                            location='admin' enableSubmit={false} />
-                            <Grid container spacing={2} justifyContent="center" alignItems="flex-start" >  
-                            <Grid item xs={8} >                              
-                                <DropForm param='TipoInmueblesPropia'
-                                location='admin' enableSubmit={false} />
-                            </Grid>
-                            <Grid item xs={4} >                              
-                            <TextField
-                                required
-                                id="nVivienda"
-                                name="nVivienda"
-                                label="#"
-                                variant="outlined"
-                                value={nValues.nVivienda}
-                                onChange={e=> onChange("nVivienda",e.target.value)}
-                            />                            
-                            </Grid>
-                            <TextField
-                                        required
-                                        id="costoAdministracion"
-                                        name="costoAdministracion"
-                                        label="Costo de Administracion"
-                                        variant="outlined"
-                                        type="number"
-                                        value={nValues.nAgrupacion}
-                                        onChange={e=> onChange("nAgrupacion",e.target.value)}
+                        <div>
+                            <DropFormConjunto3 param='TipoAgrupacionesPropia' 
+                                    location='admin' enableSubmit={false} 
+                                    currentConjunto ={conjunto} currentUsuario={user} 
+                                    location2='social' param3='tipoAgrupacionById' 
+                                    enableSubmit = {false} param2='newAgrupacion' 
                                     />
-                            </Grid>
-                            <br/>
-                            <Box textAlign='center'>
-                                <Button type="submit" variant="contained" color="success"endIcon={<SaveTwoToneIcon/>}>Confirmar</Button>
-                            </Box>
-                            </div>
+                        </div>
                             :
                         <div></div>
                     }
