@@ -15,7 +15,10 @@ import Swal from "sweetalert2";
 import zonasComunes from '../../Components/ZonasComunes';
 import ZonasComunes from '../../Components/ZonasComunes';
 import Alquiler from '../../Components/Alquiler';
+import { useHistory } from 'react-router-dom';
+
 const AdminDashboard = () => {
+    let history = useHistory();
     const [user, setUser] = useState({});
     const [section, setSection] = useState('Feed');
     const [currentUser,setCurrentUser] = useState(JSON.parse(localStorage.getItem('user')));
@@ -39,6 +42,8 @@ const AdminDashboard = () => {
                 return <EditarUsuario  user={currentUser} conjunto={currentConjunto}/>;
             case 'ZonasComunes':
                 return <ZonasComunes  user={currentUser} conjunto={currentConjunto}/>;
+            case 'Exit':
+                history.push("/");
             default:
               return <Feed user={currentUser} conjunto={currentConjunto}/>;
           }
@@ -69,10 +74,15 @@ const AdminDashboard = () => {
     },[]);
     return (
         <div className="adminContainer">
+            <div className="fondo"/>
             <Leftbar user={currentUser} conjunto={currentConjunto} changeSection={changeSection}/>
-            {switchSection(section)
-            }
-            <Rightbar/>   
+            <div className="leftabsoluteadmin">
+                {switchSection(section)
+                }
+            </div>
+            <div className="rightabsoluteadmin">
+                <Rightbar/>
+            </div>
         </div>
     )
 }

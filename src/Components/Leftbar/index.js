@@ -18,6 +18,7 @@ import MapsHomeWorkTwoToneIcon from '@mui/icons-material/MapsHomeWorkTwoTone';
 import BeachAccessTwoToneIcon from '@mui/icons-material/BeachAccessTwoTone';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
+import Exit from '@mui/icons-material/ExitToApp';
 import axios from 'axios';
 
 import {
@@ -118,35 +119,35 @@ export default function Leftbar({user,changeSection,conjunto,vivienda}) {
               }
           </div>
           <Divider />
-          <List>
+          <List className="letras">
             {user.tipousuario=="Administrador"?
               <div>
                 <ListItemButton name="Configuracion" className="Configuracion" onClick={handleClick}>
-                  <ListItemIcon><SettingsIcon className="sidebarIcon"/> </ListItemIcon>
-                  <ListItemText>Configuracion</ListItemText>
+                  <ListItemIcon><SettingsIcon className="sidebarIcon letras"/> </ListItemIcon>
+                  <ListItemText className="letras">Configuracion</ListItemText>
                     {open ? <ExpandLess /> : <ExpandMore />}
                 </ListItemButton>
-                <Collapse in={open} timeout="auto" unmountOnExit>
+                <Collapse in={open} timeout="auto" unmountOnExit >
                     <List component="div" disablePadding>
                       <ListItemButton name="CrearUsuario" className="crearUsuario" onClick={changeSection('crearUsuario') } sx={{ pl: 4 }}>
-                        <ListItemIcon><PersonAddIcon className="sidebarIcon"/> </ListItemIcon>
-                        <ListItemText>CrearUsuario</ListItemText>
+                        <ListItemIcon><PersonAddIcon className="sidebarIcon letras"/> </ListItemIcon>
+                        <ListItemText className="letras">CrearUsuario</ListItemText>
                       </ListItemButton>
                       <ListItemButton name="Conjuntos" className="Conjuntos" onClick={changeSection('Conjuntos') }sx={{ pl: 4 }}>
-                        <ListItemIcon><HomeWorkIcon className="sidebarIcon"/> </ListItemIcon>
-                        <ListItemText> Conjunto</ListItemText>
+                        <ListItemIcon><HomeWorkIcon className="sidebarIcon letras"/> </ListItemIcon>
+                        <ListItemText className="letras"> Conjunto</ListItemText>
                       </ListItemButton>
                       <ListItemButton name="ConfigurarConjuntos" className="ConfigurarConjuntos" onClick={changeSection('ConfigurarConjuntos') }sx={{ pl: 4 }}>
-                        <ListItemIcon><MapsHomeWorkTwoToneIcon className="sidebarIcon"/> </ListItemIcon>
-                        <ListItemText>Añadir Inmuebles</ListItemText>
+                        <ListItemIcon><MapsHomeWorkTwoToneIcon className="sidebarIcon letras"/> </ListItemIcon>
+                        <ListItemText className="letras">Añadir Inmuebles</ListItemText>
                       </ListItemButton>
                       <ListItemButton name="EditarUsuario" className="EditarUsuario" onClick={changeSection('EditarUsuario') }sx={{ pl: 4 }}>
-                        <ListItemIcon><HomeRoundedIcon className="sidebarIcon"/> </ListItemIcon>
-                        <ListItemText>Asignar viviendas</ListItemText>
+                        <ListItemIcon><HomeRoundedIcon className="sidebarIcon letras"/> </ListItemIcon>
+                        <ListItemText className="letras">Asignar viviendas</ListItemText>
                       </ListItemButton>
                       <ListItemButton name="ZonasComunes" className="ZonasComunes" onClick={changeSection('ZonasComunes') }sx={{ pl: 4 }}>
-                        <ListItemIcon><BeachAccessTwoToneIcon className="sidebarIcon"/> </ListItemIcon>
-                        <ListItemText>Zonas Comunes</ListItemText>
+                        <ListItemIcon><BeachAccessTwoToneIcon className="sidebarIcon letras"/> </ListItemIcon>
+                        <ListItemText className="letras">Zonas Comunes</ListItemText>
                       </ListItemButton>
                     </List>
                 </Collapse>
@@ -154,13 +155,17 @@ export default function Leftbar({user,changeSection,conjunto,vivienda}) {
               </div>
               :
               <div><ListItemButton name="Alquilar" className="Alquilar" onClick={changeSection('Alquiler') }sx={{ pl: 4 }}>
-              <ListItemIcon><BeachAccessTwoToneIcon className="sidebarIcon"/> </ListItemIcon>
-              <ListItemText>Alquilar</ListItemText>
+              <ListItemIcon><BeachAccessTwoToneIcon className="sidebarIcon letras"/> </ListItemIcon>
+              <ListItemText className="letras">Alquilar</ListItemText>
             </ListItemButton></div>
             }
             <ListItemButton  name="Feed" className="Feed" onClick={changeSection('Feed') }>
               <ListItemIcon><EmojiEmotionsIcon className="sidebarIcon letras"/> </ListItemIcon>
               <ListItemText className="letras">Feed</ListItemText>
+            </ListItemButton>
+            <ListItemButton  name="Exit" className="Exit" onClick={changeSection('Exit') }>
+              <ListItemIcon><Exit className="sidebarIcon letras"/> </ListItemIcon>
+              <ListItemText className="letras">Exit</ListItemText>
             </ListItemButton>
           </List>          
         </ul>
