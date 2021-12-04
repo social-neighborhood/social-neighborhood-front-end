@@ -15,7 +15,7 @@ import './rightbar.css';
 const Rightbar = () => {
     const [rtData, setRTData] =  useState([])
     const [show, setShow] =  useState(true)
-    const [count, setCount] =  useState(1)
+    const [count, setCount] =  useState(0)
 
     async function  loadDataRT(){
         const suscriber = await db.collection('Post').orderBy("fechaPublicacion", "desc").onSnapshot(querySnapshot =>{
