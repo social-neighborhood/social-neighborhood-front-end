@@ -107,7 +107,7 @@ const EditarUsuario = ({user,conjunto}) => {
 
     return (
         <div>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }} className="card_edit" fullWidth>
+        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 ,mx:0}} className="card_edit" fullWidth>
            <Typography variant="h4" align="center" gutterBottom>Usuarios</Typography>
            <div>
             <DropForm param='Usuario'

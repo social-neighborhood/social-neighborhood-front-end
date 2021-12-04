@@ -42,7 +42,7 @@ const Conjuntos = ({user, conjunto}) => {
         setIsInmueble(false);
         }
     return (
-        <Box sx={{  flexGrow: 1 }} className="card">
+        <Box sx={{  flexGrow: 1,mx:0 }} className="card">
         <Typography variant="h4" align="center" component="h1" gutterBottom>Conjuntos</Typography>
             <Typography align="center" component="p" gutterBottom>
                 A continuación podrás indicar que tipo de conjunto quieres tener, no es necesario 

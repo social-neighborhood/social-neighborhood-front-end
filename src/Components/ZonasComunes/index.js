@@ -145,7 +145,7 @@ const handleSubmit = (event) => {
                 });
             };
     return (
-        <Box sx={{  flexGrow: 1 }} className="card">
+        <Box sx={{  flexGrow: 1,mx:0 }} className="card">
         <Typography variant="h4" align="center" component="h1" gutterBottom>Zonas Comunes</Typography>
             <Typography align="center" component="p" gutterBottom>
                 Siempre divertirse y compartir va ser muy importante para  crear una comunidad mas unida es por eso

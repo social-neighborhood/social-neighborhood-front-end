@@ -117,7 +117,7 @@ const ConfigurarConjuntos = ({user,conjunto}) => {
             });
       };
     return (
-        <Box sx={{  flexGrow: 1 }} className="card">
+        <Box sx={{  flexGrow: 1,mx:0}} className="card">
         <Typography variant="h4" align="center" component="h1" gutterBottom>Configuracion de Conjuntos</Typography>
             <Typography align="center" component="p" gutterBottom>
                 Un conjunto necesita viviendas!, es por eso que aquí puedes agregar las residencias
