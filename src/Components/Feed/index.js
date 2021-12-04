@@ -58,7 +58,7 @@ const Feed = ({user,conjunto}) => {
             apellidoUsuario: user.apellidos,
             rol: user.tipousuario,
             fechaPublicacion:  Date.now(),
-            idConjunto: conjunto.idconjunto,
+            idConjunto: conjunto?.idconjunto?conjunto.idconjunto:conjunto.idconjuntousuario,
             imagen: fileUrl,
             nombreUsuario: user.nombres,
             texto: e.target.inputPost.value

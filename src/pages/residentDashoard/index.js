@@ -41,11 +41,11 @@ const ResidentDashboard = () => {
      const switchSection = (param) =>{
         switch(param) {
             case 'Feed':
-                return <Feed user={currentUser} conjunto={currentConjunto} />;
+                return <Feed user={currentUser} conjunto={currentVivienda} />;
             case 'Exit':
                 history.push("/");
         default:
-            return <Feed user={currentUser} conjunto={currentConjunto} />;
+            return <Feed user={currentUser} conjunto={currentVivienda} />;
         }
     }
      useEffect(() => {
