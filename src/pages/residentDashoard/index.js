@@ -25,6 +25,7 @@ const ResidentDashboard = () => {
      }
 
      const [open, setOpen] = useState(false);
+     const [right, setRight] = useState([]);
 
      const handleClickOpen = () => {
        setOpen(true);
@@ -33,14 +34,18 @@ const ResidentDashboard = () => {
      const handleClose = () => {
        setOpen(false);
      };
+     const sendRight = data => () => {
+         console.log(data)
+        setRight(data);
+      };
      const switchSection = (param) =>{
         switch(param) {
             case 'Feed':
-                return <Feed user={currentUser} conjunto={currentConjunto}/>;
+                return <Feed user={currentUser} conjunto={currentConjunto} />;
             case 'Exit':
                 history.push("/");
         default:
-            return <Feed user={currentUser} conjunto={currentConjunto}/>;
+            return <Feed user={currentUser} conjunto={currentConjunto} />;
         }
     }
      useEffect(() => {
@@ -76,7 +81,7 @@ const ResidentDashboard = () => {
                  }
             </div>
             <div className="rightabsolute">
-                <Rightbar/>
+                <Rightbar right={right}/>
             </div>
         </div>
     )

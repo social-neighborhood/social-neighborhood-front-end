@@ -28,6 +28,11 @@ const AdminDashboard = () => {
         console.log(section)
         setSection(some)
      }
+     const sendRight = data => () => {
+        setRight(data);
+      };
+      const [right, setRight] = useState([]);
+
     const switchSection = (param) =>{
         switch(param) {
             case 'crearUsuario':
@@ -35,7 +40,7 @@ const AdminDashboard = () => {
             case 'Conjuntos':
                 return <Conjuntos user={currentUser} conjunto={currentConjunto}/>;
             case 'Feed':
-                    return <Feed user={currentUser} conjunto={currentConjunto}/>;
+                    return <Feed user={currentUser} conjunto={currentConjunto} />;
             case 'ConfigurarConjuntos':
                 return <ConfigurarConjuntos user={currentUser} conjunto={currentConjunto}/>;
             case 'EditarUsuario':
@@ -81,7 +86,7 @@ const AdminDashboard = () => {
                 }
             </div>
             <div className="rightabsoluteadmin">
-                <Rightbar/>
+                <Rightbar right={right}/>
             </div>
         </div>
     )

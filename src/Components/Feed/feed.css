@@ -1,8 +1,11 @@
 .feed{
-    flex:5.5;
     background: rgb(227, 228, 229);
+    margin: 15px 15px;;
 }
 
 .feedWrapper{
-    padding: 20px;
+    padding: 20px 0;
+}
+.date{
+    text-align:left;
 }

@@ -32,8 +32,7 @@ const Feed = ({user,conjunto}) => {
                     key: documentSnapshot.id
                 })
             });
-            
-            setRTData(posts)
+            setRTData(posts);
         })
         return () => suscriber()
     }
@@ -52,11 +51,12 @@ const Feed = ({user,conjunto}) => {
     const onSubmit = (e) => {
         e.preventDefault();
         console.log(e.target.inputPost.value)
-        if( !user.nombres|| !fileUrl){
+        if( !user.nombres){
             return
         }
         db.collection("Post").doc().set({
             apellidoUsuario: user.apellidos,
+            rol: user.tipousuario,
             fechaPublicacion:  Date.now(),
             idConjunto: conjunto.idconjunto,
             imagen: fileUrl,
@@ -66,6 +66,7 @@ const Feed = ({user,conjunto}) => {
             Swal.fire("Error de servidor :(!", "Intenta de nuevo", "error");
         });
         setFileUrl(null)
+        e.target.reset()
       }
     const onFileChange = async(e) =>{
         isLoading(true);
@@ -79,7 +80,7 @@ const Feed = ({user,conjunto}) => {
     return (
     <div className="feed">
         <div className="feedWrapper">
-        <Card sx={{ width: 700}}>
+        <Card sx={{ width: 700, pl:1}}>
             <CardHeader
                 avatar={
                 <Avatar sx={{ bgcolor: red[123] }} aria-label="recipe">
@@ -88,7 +89,7 @@ const Feed = ({user,conjunto}) => {
                 }
                 title={user?.nombres+ ' '+ user?.apellidos}
             />
-            {date}{time}
+            <div className="date">{date}{time}</div>
             <Box component="form" onSubmit={onSubmit} noValidate sx={{ mt: 1 }}>
             <CardContent>
             <TextField
@@ -113,9 +114,13 @@ const Feed = ({user,conjunto}) => {
              </Box>
         </Card>
         {rtData?.map(function (post) {
+            console.log(post)
+            if(user.tipousuario =='Residente' && post.rol!="Administrador")
             return(
-                <Post key={post.id} data={post} />
-            )
+                <Post key={post.id} data={post} />)
+            if (user.tipousuario =='Administrador' && post.rol!="Administrador")
+            return(
+                <Post key={post.id} data={post} />)
         })}   
         </div>
     </div>

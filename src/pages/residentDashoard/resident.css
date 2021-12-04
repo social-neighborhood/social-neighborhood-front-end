@@ -6,9 +6,9 @@
 }
 .leftabsolute{
     position: relative;
-    left: 20%;
+    left: 23%;
 }
 .rightabsolute{
     position: fixed;
-    left: 69%;
+    left: 75%;
 }

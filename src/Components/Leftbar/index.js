@@ -102,7 +102,7 @@ export default function Leftbar({user,changeSection,conjunto,vivienda}) {
         <ul className="sidebarList">
           <Avatar
             alt={user.nombres}
-            src={user.profilePicture}
+            src={"/people/"+user.nombrefoto}
             sx={{ width: 156, height: 156 }}
           />
           <div className="profileInfo">
