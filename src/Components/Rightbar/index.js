@@ -14,7 +14,7 @@ import { indigo } from '@mui/material/colors';
 import './rightbar.css';
 const Rightbar = () => {
     const [rtData, setRTData] =  useState([])
-    const [show, setShow] =  useState(true)
+    const [show, setShow] =  useState(false)
     const [count, setCount] =  useState(0)
 
     async function  loadDataRT(){
@@ -54,7 +54,7 @@ const Rightbar = () => {
                     direction="row"
                     alignItems="center"
                     justifyContent="flex-end"
-                ><IconButton style={{backgroundColor: indigo[500], borderRadius: 50 ,width:'60px'}}
+                ><IconButton style={{backgroundColor: indigo[500], borderRadius: 50 ,width:'60px'}} onClick={()=>{setShow(!show)}}
                         
                         >   
                         { rtData?
