@@ -1,9 +1,6 @@
-import React,{useState} from 'react'
-import MenuItem from '@mui/material/MenuItem';
+import React,{Fragment,useState} from 'react'
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import SendIcon from '@mui/icons-material/Send';
@@ -25,24 +22,17 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import DialogActions from '@mui/material/DialogActions';
+import DesktopDatePicker from '@mui/lab/DesktopDatePicker';
+import DateFnsUtils from '@date-io/date-fns';
+import { DateTimePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 
-const defaultState = {
-        tipoAgrupacion: {},
-        tipoInmueble: {}
-    }
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+
 const Alquiler = ({conjunto,user,vivienda,isEnabled,handleClose}) => {
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
-const [current,setCurrent] = useState({
-    idZonaComun:0
-});
-const handleOnChange = (value) => {
-    console.log(value)
-    setCurrent({
-        ...current,idZonaComun:value
-    });
-    console.log(current)
-  };
+
 const getStringDataLocation =()=>{
     let str =''
     user?.tipoUsuario == 'Residente' ? 
@@ -52,20 +42,25 @@ const getStringDataLocation =()=>{
 }
 const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
+    handleClose()
     let body={
         idZonaComun:current.idZonaComun,
-        idConjunto: conjunto.idconjunto,
-        tiempoAlquilerCobro: data.get('tiempoAlquiler'),
-        costoAlquiler: data.get('costoAlquiler'),
-        Disponible: data.get('row-radio-buttons-group'),
-        tiempodeespera: data.get('tiempoEspera'),
-        tiempomaximoalquiler: data.get('tiempoMaximo')
+        idunidaddeviviendausuario:vivienda.idunidaddevivienda,
+        iniciodealquiler: parseInt((new Date(value2+' '+current.iniciodealquiler).getTime()/1000).toFixed(0)),
+        findealquiler: parseInt((new Date(value2+' '+current.findealquiler.split(' ')[1])/1000).toFixed(0)),
+        costo:current.findealquiler.split(' ')[2],
+        pagado: true,
+        cancelado:false
     }
-    console.log(data);
-    console.log(body);
-    let currentstr = getStringDataLocation();
-    axios.post(window.$dir+`admin`+`/`+ `newzonaComunConjunto`+`/`+ currentstr, body)
+    let url = window.$dir+`client`+`/`+ 'newAlquiler/'+
+    body.iniciodealquiler+`/`+
+    body.findealquiler+`/`+
+    body.idZonaComun+`/`+
+    conjunto.idconjunto+`/`+
+    user.id+`/`+
+    body.idunidaddeviviendausuario
+    console.log(url);
+    axios.post(url)
     .then( function (response) {
         console.log(response.status);
         console.log(response.data);
@@ -81,60 +76,48 @@ const handleSubmit = (event) => {
         }                                                               
     })
     .catch(function (errorx) {
-        Swal.fire("Esta zona comun ya existe! :(!", "intenta con otra  zona de tu conjunto", "error");
+        Swal.fire("No es posible hacer el alquiler! :(!", "intenta con otro horario", "error");
     });
 };
-    const [currentConjuntoData,SetCurrentConjuntoData] = useState({
-        idConjunto:'',
-        tipoAgrupacion: '',
-        tipoInmueble: ''
-        });
-    const [isEnableButtons,setEnableButtons] = useState(false);
 
-    const [isNext,setNext] = useState(false);
-
-
-    const [isAgrupacion,setIsAgrupacion] = useState(false);
-    const [isUnidad,setIsUnidad] = useState(false);
-    const toggleAgrupacion =()=>{
-        setIsAgrupacion(true);
-        setIsUnidad(false);
-        }
-    const toggleNext =()=>{
-            if(!isNext && !isUnidad){
-            setNext(true);
-            toggleUnidad();
-            }else{
-            setNext(false);
-            setIsAgrupacion(false);
-            setIsUnidad(false);
-            }
-        }
-    const toggleUnidad =()=>{
-        setIsAgrupacion(false);
-        setIsUnidad(true);
-        }
-    const handleChange = data => {
-        const { name, value } = data;
-        SetCurrentConjuntoData({
-            ...currentConjuntoData,
-            [name]: value
-        });
-        console.log(currentConjuntoData)
+const [current,setCurrent] = useState({
+    idZonaComun:null,
+    idunidaddeviviendausuario:'',
+    iniciodealquiler:'',
+    findealquiler:'',
+    costo:''
+});
+const handleOnChange = (name, value) => {
+    setCurrent({
+        ...current,[name]:value
+    });
     };
 
-        const [nValues,setNvalues]= useState({
-            nVivienda:'',
-            nAgrupacion:''
-        });
-        const onChange = (name,value) => {
-            setNvalues(
-                {...nValues,
-                    [name]:value
-                });
-            };
+    const toggleInicioAlquiler = data => {
+        handleOnChange('iniciodealquiler',data)
+    };
+    const toggleFinAlquiler = data => {
+        handleOnChange('findealquiler',data)
+    };
+    const toggleZonaComun = (value) => {
+        handleOnChange("idZonaComun",value)
+        };
+
+    const [value2, setValue2] = useState('2021-12-01');
+    const handleChange2 = (newValue) => {
+        const today = new Date(newValue)
+        let currentMonth = parseInt(today.getMonth()+1);
+        let currentDay = today.getDate();
+        if (currentMonth<10) currentMonth='0'+currentMonth;
+        if (currentDay<10) currentDay='0'+currentDay;
+        let res  = today.getFullYear()+ "-"+ currentMonth +"-"+currentDay
+        console.log(res)
+        setValue2(res);
+        };
     return (
-        <Dialog open={isEnabled} onClose={handleClose} fullScreen={fullScreen}>
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+        <Dialog open={isEnabled} onClose={handleClose}  fullWidth
+        maxWidth="md">
         <DialogTitle id="responsive-dialog-title"> {"Alquilar"} </DialogTitle>   
         <DialogContent> 
             <DialogContentText>
@@ -153,38 +136,43 @@ const handleSubmit = (event) => {
                 <Grid item xs={6} > 
                     <DropForm param='zonaComun'
                         currentConjunto ={conjunto} currentUsuario={user} 
-                        location='admin' enableSubmit={false} submited={handleOnChange} isenable={true}/>
-                    <TextField
-                        required
-                        id="inicioAlquiler"
-                        name="inicioAlquiler"
-                        variant="outlined"
-                        type="datetime-local"
-                    />
-                     <TextField
-                        required
-                        id="finAlquiler"
-                        name="finAlquiler"
-                        variant="outlined"
-                        type="datetime-local"
-                    />
-                    <TextField
-                        disabled
-                        id="costoAlquiler"
-                        name="costoAlquiler"
-                        label="costo de Alquiler"
-                        variant="outlined"
-                        type="number"
-                        InputProps={{
-                            startAdornment: <InputAdornment position="start">$</InputAdornment>,
-                          }}    
-                        value = "145000"  
-                    />
+                        location='admin' enableSubmit={false} submited={toggleZonaComun} isenable={true}/>
+                    <Grid container spacing={2}  >
+                        <Grid item xs={6}> 
+                            <DesktopDatePicker
+                               label="DateTimePicker"
+                               inputVariant="outlined"
+                               value={value2}
+                               size="small"
+                               onChange={handleChange2}
+                              renderInput={(params) => <TextField {...params} />}
+                                />
+                        </Grid>
+                        <Grid item xs={3}> 
+                        {current.idZonaComun&&value2?
+                         <DropForm param={'HorasInicioAlquiler/'+value2+'/'+current.idZonaComun}
+                         currentConjunto ={conjunto} currentUsuario={user} 
+                         location='client' enableSubmit={false} 
+                         submited={toggleInicioAlquiler} isenable={true}
+                         stringStr={true}
+                         />:<div></div>
+                        }
+                        </Grid>
+                    </Grid>
+                    <br/>
+                    {current.iniciodealquiler!='' && value2?
+                         <DropForm param={'HorasFinAlquiler'+'/'+value2+'/'+current.iniciodealquiler+'/'+current.idZonaComun}
+                         currentConjunto ={conjunto} currentUsuario={user} 
+                         location='client' enableSubmit={false} 
+                         submited={toggleFinAlquiler} isenable={true}
+                         stringStr={true}
+                         />:<div></div>
+                        }
                 </Grid>
             </Grid>
             <br/>
             <DialogActions>
-                <Button autoFocus onClick={handleClose}>
+                <Button autoFocus onClick={handleSubmit}>
                     Aceptar 
                 </Button>
                 <Button onClick={handleClose} autoFocus>
@@ -194,6 +182,7 @@ const handleSubmit = (event) => {
             </Box>
         </DialogContent> 
         </Dialog>
+        </LocalizationProvider>
     )
     }    
 export default Alquiler

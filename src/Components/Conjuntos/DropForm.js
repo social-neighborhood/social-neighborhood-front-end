@@ -17,7 +17,7 @@ const defaultState = {
     ans:''
 };
 
-const DropForm = ({param,param2,param3,
+const DropForm = ({param,param2,param3,stringStr,
                     location,location2,
                     onChange,enableSubmit,submited,isenable,
                     currentConjunto,currentUsuario,currentVivienda,
@@ -41,9 +41,11 @@ const DropForm = ({param,param2,param3,
     }
     const fetchData = useCallback(async () => {
             let currentstr = getStringDataLocation();
+            if(stringStr)currentstr='';
+
             await axios.get(window.$dir+location+`/`+ param+`/`+ currentstr
             )
-            .then( (res) =>{  setDatas(res.data)
+            .then( (res) =>{ console.log(res.data); setDatas(res.data)
             }).catch(
                 e =>{console.log("Error: :c "+e)}
             )
@@ -53,7 +55,7 @@ const DropForm = ({param,param2,param3,
     },[fetchData])
     const handleCurrentItem = (val) =>{
         setCurrentItem(val);
-        if(isenable)submited(currentItem);
+        if(isenable)submited(val);
     }
     const handleSubmit = (event) => {
         Togglesubmit2(true)
@@ -102,20 +104,47 @@ const DropForm = ({param,param2,param3,
                 {datas.length!=0?
                     <TextField variant="outlined" id="select" name="prueba2" label={param} select required fullWidth
                         onChange={Togglesubmit2} >
-                            {
+                            {param=='unidadesDeViviendaConjuto'?
                             datas?.map((element)=>{
                                     return (
-                                        <MenuItem id={element.id} 
-                                                key ={element.id}
-                                                name={element.nombre||element.nombres+' '+element.apellidos } 
-                                                value={element.nombre||element.nombres+' '+element.apellidos } 
-                                                onClick= {(e)=>{handleCurrentItem(element.id)}}
+                                        <MenuItem id={element.idunidaddevivienda} 
+                                                key ={element.idunidaddevivienda}
+                                                name={ element.tipoinmueble+' '+element.numinmueble+' '+element.tipoagrupacion+' '+element.numagrupacion} 
+                                                value={element.tipoinmueble+' '+element.numinmueble+' '+element.tipoagrupacion+' '+element.numagrupacion} 
+                                                onClick= {(e)=>{handleCurrentItem(element.idunidaddevivienda)}}
                                                 >
-                                            {element.nombre||element.nombres+' '+element.apellidos }
+                                            { element.tipoinmueble+' '+element.numinmueble+' '+element.tipoagrupacion+' '+element.numagrupacion}
+                                        </MenuItem>      
+                                    )                 
+                                }):
+                            (!datas[0].fin)?
+                            datas?.map((element)=>{
+                                console.log(element)
+                                    return (
+                                        <MenuItem id={element.id?element.id:element.horainicio?element.horainicio:element.horafin} 
+                                                key ={element.id?element.id:element.horainicio?element.horainicio:element.horafin}
+                                                name={ element.nombre?element.nombre:element.horainicio?element.horainicio:element.horafin?element.horafin:element.nombres+' '+element.apellidos} 
+                                                value={ element.nombre?element.nombre:element.horainicio?element.horainicio:element.horafin?element.horafin:element.nombres+' '+element.apellidos} 
+                                                onClick= {(e)=>{handleCurrentItem(element.id?element.id:element.horainicio?element.horainicio:element.horafin)}}
+                                                >
+                                            { element.nombre?element.nombre:element.horainicio?element.horainicio:element.horafin?element.horafin:element.nombres+' '+element.apellidos}
                                         </MenuItem>      
                                     )                 
                                 })
-                                
+                            :
+                            datas?.map((element)=>{
+                                console.log(element)
+                                    return (
+                                        <MenuItem id={element.fin} 
+                                                key ={element.fin}
+                                                name={element.fin+' '+element.costo} 
+                                                value={element.fin+' '+element.costo} 
+                                                onClick= {(e)=>{handleCurrentItem(element.fin+' '+element.costo)}}
+                                                >
+                                            {element.fin+' Costo: $'+element.costo}
+                                        </MenuItem>      
+                                    )                 
+                                })
                             }
                 </TextField>
                 :<LoadingButton loading loadingPosition="start" variant="outlined">Loading..</LoadingButton>

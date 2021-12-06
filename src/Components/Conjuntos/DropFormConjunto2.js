@@ -16,9 +16,9 @@ import { getTypeByValue } from "@mui/utils/integerPropType";
 
 const DropFormConjunto2 = ({param,param2,param3,param4,
                     location,location2,location3,
-                    onChange,enableSubmit,submited,
+                    onChange,enableSubmit,submited,submited2,
                     currentConjunto,currentUsuario,currentVivienda,
-                    submiting,needNumber,
+                    submiting,needNumber,submiting2,
                     level}) => {
     const [datas,setDatas] = useState([]);
     const [datas2,setDatas2] = useState([]);
@@ -47,10 +47,7 @@ const DropFormConjunto2 = ({param,param2,param3,param4,
             let str = result.idTipoAgrupacion?result.idTipoAgrupacion:result.idtipoagrupacionconjunto?result.idtipoagrupacionconjunto+`/`+currentstr:result.idTipoInmueble
             return axios.get(window.$dir+location2+`/`+ param3+`/`+ str)
             .then(function(response){
-                console.log(response.data)
                 if(level && level==2){
-                    console.log("level2:")
-                    console.log(window.$dir+location3+`/`+ param4+`/`+ response.data.idTipoAgrupacion)
                     return  axios.get(window.$dir+location3+`/`+ param4+`/`+ response.data.idTipoAgrupacion)
                     .then(function(response){
                         return  response.data
@@ -70,7 +67,10 @@ const DropFormConjunto2 = ({param,param2,param3,param4,
         await axios.get(window.$dir+location+`/`+ param+`/`+ currentstr
         )
         .then( (res) =>{ 
-            if(level>=1)ayuda(res.data,currentstr)
+            if(level>=1){
+                console.log(res.data)
+                ayuda(res.data,currentstr)
+            }
             setDatas(res.data)
 
         }).catch(
@@ -83,14 +83,14 @@ useEffect(()=>{
     fetchData()
 },[fetchData])
 
-const handleOnChange = (name, value) => {
+useEffect(()=>{
     submited(current)
+},[current])
+
+const handleOnChange = (name, value) => {
     setCurrent({
         ...current,[name]:value
     });
-    console.log(name)
-    console.log(value)
-    console.log(current)
   };
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -133,13 +133,12 @@ const handleOnChange = (name, value) => {
                                  >
                                     { 
                                     datas2?.map((e,index)=>{
-                                            console.log(e)
                                             return(
                                             <MenuItem id={datas[index].id? datas[index].id:e?.id} 
                                             key ={datas[index].id? datas[index].id:e?.id}
                                             name={datas[index].numero? e?.nombre +" "+ datas[index].numero:e?.nombre } 
                                             value={datas[index].numero? e?.nombre +" "+ datas[index].numero:e?.nombre } 
-                                            onClick={event=>{handleOnChange("idItem",e?.id)
+                                            onClick={event=>{handleOnChange("idItem",datas[index].id? datas[index].id:e?.id)
                                                             }}
                                             >
                                             {datas[index].numero? e?.nombre +" "+ datas[index].numero:e?.nombre } 

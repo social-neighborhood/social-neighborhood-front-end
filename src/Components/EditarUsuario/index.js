@@ -18,60 +18,6 @@ const defaultState = {
     conjunto: "",
     unidad: ""
   };
-function Viviendas ({onRemove,onChange}){
-    return(
-        <div>
-            <Grid container spacing={2} justifyContent="center" alignItems="flex-start" >  
-            <Grid item xs={5} >                              
-                    {/* <TextField variant="outlined" id="select" label="Conjunto" select required fullWidth
-                        onChange={onChange} >
-                            {Conjuntos?.map((conjunto)=>{
-                                return (
-                                    <MenuItem id={conjunto.id}
-                                            key ={conjunto.id}
-                                            name={conjunto.nombre} 
-                                            value={conjunto.nombre}
-                                            >
-                                        {conjunto.nombre}
-                                    </MenuItem>      
-                                )                 
-                            })
-                            }
-                    </TextField> */}
-                 <TextField
-                    required
-                    disabled
-                    id="tipoHabitante"
-                    label="tipo de Habitante"
-                    variant="outlined"
-                    value="propietario"
-                    />   
-                </Grid>
-            <Grid item xs={5} >    
-                                  
-                <TextField variant="outlined" id="select" label="Unidad" select required fullWidth
-                    onChange={onChange} >
-                        {unidadesVivienda?.map((uVivienda)=>{
-                            return (
-                                <MenuItem id={uVivienda.id}
-                                        key ={uVivienda.id}
-                                        name={uVivienda.nombre} 
-                                        value={uVivienda.Agrupacion+" "+uVivienda.nAgrupacion+" "+
-                                                uVivienda.Inmueble+" "+uVivienda.nInmueble
-                                                }
-                                        >
-                                    {uVivienda.Agrupacion+" "+uVivienda.nAgrupacion+" "+
-                                                uVivienda.Inmueble+" "+uVivienda.nInmueble}
-                                </MenuItem>      
-                            )                 
-                        })
-                        }
-                </TextField>
-            </Grid>
-        </Grid>  
-        </div>
-    )
-}
 const EditarUsuario = ({user,conjunto}) => {
 
     const [currentConjuntoData,SetCurrentConjuntoData] = useState({});
@@ -81,30 +27,30 @@ const EditarUsuario = ({user,conjunto}) => {
     }
 
     const [rows, setRows] = useState([defaultState]);
-    const handleOnChange = (index, name, value) => {
-        const copyRows = [...rows];
-        copyRows[index] = {
-          ...copyRows[index],
-          [name]: value
-        };
-        setRows(copyRows);
-      };
     const handleOnAdd = () => {
     setRows(rows.concat(defaultState));
     };
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        console.log(data);
+        console.log(current);
     };
 
-    const handleOnRemove = index => {
-        const copyRows = [...rows];
-        copyRows.splice(index, 1);
-        setRows(copyRows);
+    const handleVivienda = (message) => {
+        handleOnChange("idUnidadDeVivienda",message)
+    };
+    const handleusuario = (message) => {
+        handleOnChange("idUsuario",message)
+    };
+    const [current,setCurrent] = useState({
+        idUnidadDeVivienda:'',
+        idUsuario:''
+    });
+    const handleOnChange = (name, value) => {
+        setCurrent({
+            ...current,[name]:value
+        });
       };
-
     return (
         <div>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 ,mx:0}} className="card_edit" fullWidth>
@@ -112,19 +58,34 @@ const EditarUsuario = ({user,conjunto}) => {
            <div>
             <DropForm param='Usuario'
              currentConjunto ={conjunto} currentUsuario={user} 
-                                location='admin' enableSubmit={false} />
+                                location='admin' enableSubmit={false} submited={handleusuario} isenable={true}/>
             </div>               
             <br/>
-        </Box>
         <div className="card">
             <Typography variant="h4" align="center" component="h1" gutterBottom >Viviendas</Typography>
-                <Viviendas
-                    onChange={(name, value) => handleOnChange(name, value)}
-                    onRemove={() => handleOnRemove()}
-                    />
+            <div>
+                <Grid container spacing={2} justifyContent="center" alignItems="flex-start" >  
+                    <Grid item xs={5} >                              
+                        <TextField
+                            required
+                            disabled
+                            id="tipoHabitante"
+                            label="tipo de Habitante"
+                            variant="outlined"
+                            value="propietario"
+                            />   
+                        </Grid>
+                    <Grid item xs={5} >    
+                        <DropForm param='unidadesDeViviendaConjuto' param2="newUnidadDeVivienda"
+                                            location='admin' submited={handleVivienda}  isenable={true}
+                                            enableSubmit={false} currentConjunto ={conjunto} currentUsuario={user} />
+                    </Grid>
+                </Grid>  
             </div>
+        </div>
         <Box textAlign='center'>
             <Button type="submit" variant="contained" color="success"endIcon={<SendIcon />}>Confirmar</Button>
+        </Box>
         </Box>
         </div>
     )

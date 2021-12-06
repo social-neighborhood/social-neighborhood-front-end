@@ -37,16 +37,19 @@ const DropFormConjunto3 = ({param,param2,param3,
     }
 
 const toggleAgrupacion =(message)=>{
+    const ans = message.idItem;
     console.log("datos agrupacion")
-    console.log(message);
-    handleOnChange("idagrupacion",message.idItem)
+    console.log(ans);
+    if(ans)handleOnChange("idagrupacion",ans)
     
 }
 const toggleInmueble =(message)=>{
-    console.log("datos inmueble")
+    console.log("datos inmueble "+message.idItem)
     console.log(message);
     handleOnChange("idTipoInmuebleConjunto",message.idItem)
+    if(message.nItem) handleOnChange("numInmueble",message.nItem)
 }
+
 const toggleVivienda =(message)=>{
     console.log("datos vivienda")
     console.log(message.currentTarget.value);
@@ -107,7 +110,8 @@ const handleOnChange = (name, value) => {
                         location='admin' enableSubmit={false} 
                         currentConjunto ={currentConjunto} currentUsuario={currentUsuario} 
                         location2='social' param3='tipoInmuebleById' level={1} 
-                        enableSubmit = {false} param2='newAgrupacion' submited={toggleInmueble}
+                        enableSubmit = {false} param2='newAgrupacion' 
+                        submited={toggleInmueble} 
                         />
                         <TextField 
                         fullWidth
