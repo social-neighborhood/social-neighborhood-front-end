@@ -10,7 +10,7 @@ import './registerUser.css';
 
 import axios from 'axios';
 import Swal from "sweetalert2";
-const RegisterUser = () => {
+const RegisterUser = ( {user,conjunto}) => {
     const handleSubmit = (event) => {
         let body={}
         event.preventDefault();
@@ -25,16 +25,34 @@ const RegisterUser = () => {
                 password:data.get("password"),
                 tipousuario:"Residente"
         }
-        axios.post(`https://socialneighborhood.herokuapp.com/social/newUsuario`, body)
+        event.target.reset();
+        axios.post(window.$dir+`social/newUsuario`, body)
         .then( function (response) {
-        if (response.status === 200) {
-        Swal.fire(
-                'Usuario agregado correctamente',
-                'success'
-        )
-        } else {
-        Swal.fire("Something is Wrong :(!", "try again later", "error");
-        }
+                console.log(response)
+                console.log(conjunto)
+                console.log(user)
+                if (response.status === 200) {
+                        if(user && conjunto){
+                                let body2 ={
+                                        idConjunto:conjunto.idconjunto,
+                                        idUsuario:response.data.id
+                                }
+                                axios.post(window.$dir+`/admin/registrarUsuario`, body2)
+                                .then( function (response2) {
+                                                console.log(response2)
+                                if (response2.status === 200) {
+                                Swal.fire(
+                                        'Usuario Registrado correctamente!',
+                                        'success'
+                                )} else {
+                                        Swal.fire("Something is Wrong :(!", "try again later", "error");
+                                }})  
+                        } else {
+                                Swal.fire('Te has registrado correctamente!','Bienvenido a Social Neighborhood')
+                        }  
+                } else {
+                Swal.fire("Something is Wrong :(!", "try again later", "error");
+                }
         })
         .catch(function (errorx) {
         Swal.fire(""+errorx, "try again later", "error");
@@ -45,7 +63,11 @@ const RegisterUser = () => {
     return (
         <div className="RegisterComponent">
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }} className="card">
-           <Typography variant="h4" align="center" component="h1" gutterBottom>Crear usuario</Typography>
+        {
+                user&& conjunto?
+                <Typography variant="h4" align="center" component="h1" gutterBottom>Crear Usuario</Typography>:
+                <Typography variant="h4" align="center" component="h1" gutterBottom>Registrate!</Typography>
+        }
            <Stack direction="row" spacing={2} justifyContent="center" alignItems="center">
            <TextField
                     required

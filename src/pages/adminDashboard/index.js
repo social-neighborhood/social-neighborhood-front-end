@@ -36,7 +36,7 @@ const AdminDashboard = () => {
     const switchSection = (param) =>{
         switch(param) {
             case 'crearUsuario':
-              return <RegisterUser/>;
+              return <RegisterUser user={currentUser} conjunto={currentConjunto}/>;
             case 'Conjuntos':
                 return <Conjuntos user={currentUser} conjunto={currentConjunto}/>;
             case 'Feed':
