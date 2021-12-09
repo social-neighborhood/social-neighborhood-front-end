@@ -13,6 +13,7 @@
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/fb2f181d840442eda823bfc21db2d035)](https://www.codacy.com/gh/social-neighborhood/social-neighborhood-front-end/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=social-neighborhood/social-neighborhood-front-end&amp;utm_campaign=Badge_Grade)
 
+[![CircleCI](https://circleci.com/gh/social-neighborhood/social-neighborhood-front-end/tree/main.svg?style=svg)](https://circleci.com/gh/social-neighborhood/social-neighborhood-front-end/tree/main)
 
 # Licencia & Derechos de Autor
 
