@@ -1,6 +1,6 @@
 # Social Neighborhood front-end
 
-> En el repositorio social-neighborhood-front-end se encuentra todo el código exclusivamente al Front del proyecto Social Neighborhood. Aca se encuentra el código necesario para brindar la interfaz grafica al proyecto
+> En el repositorio social-neighborhood-front-end se encuentra todo el código exclusivamente al Front del proyecto Social Neighborhood. Aca se encuentra el código necesario para brindar la interfaz grafica al proyecto, esta interfaz grafica se trabaja con react, que es un lenguaje basado en node, en este caso la versión de nodejs 16.13.0 y npm 8
 
 # Otros repositorios del proyecto
   * [Repositorio principal del proyecto](https://github.com/social-neighborhood/social-neighborhood.git) 
