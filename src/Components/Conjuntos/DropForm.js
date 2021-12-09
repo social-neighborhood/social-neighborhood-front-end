@@ -45,7 +45,7 @@ const DropForm = ({param,param2,param3,stringStr,
 
             await axios.get(window.$dir+location+`/`+ param+`/`+ currentstr
             )
-            .then( (res) =>{ console.log(res.data); setDatas(res.data)
+            .then( (res) =>{ setDatas(res.data)
             }).catch(
                 e =>{console.log("Error: :c "+e)}
             )
@@ -119,7 +119,6 @@ const DropForm = ({param,param2,param3,stringStr,
                                 }):
                             (!datas[0].fin)?
                             datas?.map((element)=>{
-                                console.log(element)
                                     return (
                                         <MenuItem id={element.id?element.id:element.horainicio?element.horainicio:element.horafin} 
                                                 key ={element.id?element.id:element.horainicio?element.horainicio:element.horafin}

@@ -52,13 +52,15 @@ const handleSubmit = (event) => {
         pagado: true,
         cancelado:false
     }
+    console.log(body)
     let url = window.$dir+`client`+`/`+ 'newAlquiler/'+
     body.iniciodealquiler+`/`+
     body.findealquiler+`/`+
     body.idZonaComun+`/`+
     conjunto.idconjunto+`/`+
     user.id+`/`+
-    body.idunidaddeviviendausuario
+    body.idunidaddeviviendausuario+`/`+
+    body.costo
     console.log(url);
     axios.post(url)
     .then( function (response) {
@@ -66,8 +68,8 @@ const handleSubmit = (event) => {
         console.log(response.data);
         if (response.status === 200) {
         Swal.fire(
-            'Actualizado correctamente',
-            'success'
+            'Alquilado! :)',
+            'No olvides compartir este evento con tus amigos'
             ).then((result) => {
                 if (result.isConfirmed) {
                 } });
@@ -102,7 +104,7 @@ const handleOnChange = (name, value) => {
     const toggleZonaComun = (value) => {
         handleOnChange("idZonaComun",value)
         };
-
+    const [value3, setValue3] = useState(new Date());
     const [value2, setValue2] = useState('2021-12-01');
     const handleChange2 = (newValue) => {
         const today = new Date(newValue)
@@ -113,6 +115,7 @@ const handleOnChange = (name, value) => {
         let res  = today.getFullYear()+ "-"+ currentMonth +"-"+currentDay
         console.log(res)
         setValue2(res);
+        setValue3(newValue);
         };
     return (
         <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -142,7 +145,7 @@ const handleOnChange = (name, value) => {
                             <DesktopDatePicker
                                label="DateTimePicker"
                                inputVariant="outlined"
-                               value={value2}
+                               value={value3}
                                size="small"
                                onChange={handleChange2}
                               renderInput={(params) => <TextField {...params} />}
@@ -150,12 +153,14 @@ const handleOnChange = (name, value) => {
                         </Grid>
                         <Grid item xs={3}> 
                         {current.idZonaComun&&value2?
+                        <div>
+                        {console.log(value2)}
                          <DropForm param={'HorasInicioAlquiler/'+value2+'/'+current.idZonaComun}
                          currentConjunto ={conjunto} currentUsuario={user} 
                          location='client' enableSubmit={false} 
                          submited={toggleInicioAlquiler} isenable={true}
                          stringStr={true}
-                         />:<div></div>
+                         /></div>:<div></div>
                         }
                         </Grid>
                     </Grid>
